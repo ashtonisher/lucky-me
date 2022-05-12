@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="당첨자 추첨기 (static)" />
+    <title>Lucky Me (추첨기)</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap&family=Ubuntu:wght@500&display=swap");
+      body {
+        font-family: "Ubuntu", "Noto Sans KR", san-serif;
+        text-align: center;
+        /* padding-top: calc(50vh - 350px); */
+      }
+      * {
+        padding: 0;
+      }
+      li {
+        list-style: none;
+      }
+
+      #main-title {
+        margin-bottom: 30px;
+        font-weight: bold;
+        font-size: 48px;
+        color: #ff517f;
+      }
+      #today {
+        color: #886655;
+        font-size: 20px;
+        font-weight: normal;
+      }
+      #winner {
+        font-size: 40px;
+        font-weight: bold;
+        color: #eb4974;
+        /* color: #ff517f; */
+      }
+      #roulette-button {
+        border-radius: 8px;
+        background: #f1648a;
+        outline: none;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        border: none;
+        margin: 30px 0 30px;
+        cursor: pointer;
+      }
+      #roulette-button:hover {
+        background: #ed798a;
+      }
+      #log-container {
+        width: 500px;
+        margin: 30px auto 0;
+        background: #fff;
+        border-radius: 0 0 15px 15px;
+        border: 2px solid #ed798a;
+      }
+      #log-title {
+        width: 100%;
+        background: #ed798a;
+        color: #fff;
+        margin: 0;
+        padding: 4px 0;
+        font-size: 22px;
+        font-weight: normal;
+      }
+      #log-list {
+        margin: 0;
+        padding: 4px 0 4px 10px;
+        height: 520px;
+        overflow-y: auto;
+        font-size: 20px;
+        text-align: left;
+        color: #222;
+      }
+      .log span {
+        color: #ddaaaa;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 id="main-title">Lucky Me</h1>
+      <h2 id="today"></h2>
+      <h2 id="winner">추첨이 필요합니다</h2>
+      <button id="roulette-button" type="button">추첨하기</button>
+      <section id="log-container">
+        <h3 id="log-title">Log</h3>
+        <ul id="log-list"></ul>
+      </section>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      // 멤버 리스트 배열
+      const lunchMate = [
+        { name: "강경일", id: 1 },
+        { name: "강영서", id: 2 },
+        { name: "이승재", id: 3 },
+        { name: "장민우", id: 4 },
+        { name: "최경환", id: 5 },
+        { name: "최성훈", id: 6 },
+      ];
+
+      //날짜 표시 기능
+      const todayStatic = new Date();
+      const month = todayStatic.getMonth();
+      const date = todayStatic.getDate();
+      const day = () => {
+        switch (todayStatic.getDay()) {
+          case 1:
+            return "월요일";
+          case 2:
+            return "화요일";
+          case 3:
+            return "수요일";
+          case 4:
+            return "목요일";
+          case 5:
+            return "금요일";
+          default:
+            return "주말";
+        }
+      };
+      document.getElementById("today").innerText = `${month + 1}월 ${date}일 ${day()}`;
+
+      socket.emit("socket");
+      socket.emit("connectMsg", "사용자");
+
+      /* ---- 코드 수정 시작 ---- */
+      // 수정내역(05.06): 참여자 모두 접속시 자동 추첨기능 추가
+
+      // 랜덤 당첨자 뽑기 기능 (재사용함수)
+      const roulette = () => {
+        // 랜덤 번호와 id 비교
+        const chosenNum = Math.floor(Math.random() * lunchMate.length) + 1;
+        const winner = lunchMate.filter((user) => user.id === chosenNum);
+
+        const chosen = winner[0].name;
+        // 소켓: 클라이언트 객체
+        // 소켓이 set winner 이벤트를 보냄
+        return chosen;
+      };
+
+      // 클릭 시 roulette 실행
+      const rouletteOnClick = () => {
+        const chosen = roulette();
+        // 클릭 시 발생하는 이벤트 명 set winner
+        socket.emit("set winner", chosen);
+      };
+
+      // 참여자 모두 접속 시 roulette 자동 실행
+      const rouletteOnRenderAuto = () => {
+        const chosen = roulette();
+        // 참여자 접속 시 발생하는 이벤트 명 set winner auto
+        socket.emit("set winner auto", chosen);
+      };
+
+      // 버튼 클릭시 추첨 진행
+      document.getElementById("roulette-button").addEventListener("click", rouletteOnClick);
+
+      // 참여자 모두 접속 시(렌더링) 자동 추첨 진행
+      window.onload = rouletteOnRenderAuto;
+
+      /* ---- 코드 수정 끝 ---- */
+
+      socket.on("set winner", (chosen) => {
+        // 뽑기 시간 기록용 시간 계산
+        const todayLog = new Date();
+        const hour = todayLog.getHours() < 10 ? `0${todayLog.getHours()}` : todayLog.getHours();
+        const minutes = todayLog.getMinutes() < 10 ? `0${todayLog.getMinutes()}` : todayLog.getMinutes();
+
+        // 당첨자 표시 및 로그 기록 추가
+        document.getElementById("winner").innerText = `🎉당첨: ${chosen} 매니저님`;
+        var newLog = document.createElement("li");
+        newLog.className = "log";
+        newLog.innerHTML = `당첨자: ${chosen}M <span>(${hour}:${minutes})</span>`;
+        document.getElementById("log-list").appendChild(newLog);
+      });
+
+      socket.on("message", (msg) => {
+        console.log(msg);
+        const todayLog = new Date();
+        const hour = todayLog.getHours() < 10 ? `0${todayLog.getHours()}` : todayLog.getHours();
+        const minutes = todayLog.getMinutes() < 10 ? `0${todayLog.getMinutes()}` : todayLog.getMinutes();
+
+        var newLog = document.createElement("li");
+        newLog.className = "log";
+        newLog.innerHTML = `${msg} <span>(${hour}:${minutes})</span>`;
+        document.getElementById("log-list").appendChild(newLog);
+      });
+    </script>
+  </body>
+</html>

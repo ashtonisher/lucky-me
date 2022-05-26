@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="당첨자 추첨기 (static)" />
+    <meta name="description" content="바나플 추첨기" />
     <title>Lucky Me (추첨기)</title>
     <link rel="stylesheet" href="css/style.css" type="text/css" />
   </head>
@@ -17,117 +17,23 @@
         <h3 id="log-title">Log</h3>
         <ul id="log-list"></ul>
       </section>
-      <aside class="aside">
-        <button class="aside-toggle-button"></button>
+      <aside id="aside">
+        <button id="aside-toggle-button"></button>
         <div class="aside-container">
           <article class="menu-suggest">
-            <h3 class="menu-title">Menu</h3>
-            <p class="menu">추천메뉴</p>
-            <button class="menu-button">다른 메뉴 보기</button>
+            <h3 class="menu">오늘 뭐 먹지?</h3>
+            <section class="menu-info">
+              <!-- <div class="menu-img"></div> -->
+              <p class="menu-name">추천메뉴1</p>
+              <span class="menu-price">4,400원</span>
+            </section>
+            <button id="menu-reload-button">draw again</button>
           </articlec>
         </div>
       </aside>
     </main>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io();
-      // 멤버 리스트 배열
-      const lunchMate = [
-        { name: "강경일", id: 1 },
-        { name: "강영서", id: 2 },
-        { name: "이승재", id: 3 },
-        { name: "장민우", id: 4 },
-        { name: "최경환", id: 5 },
-        { name: "최성훈", id: 6 },
-      ];
-
-      //날짜 표시 기능
-      const todayStatic = new Date();
-      const month = todayStatic.getMonth();
-      const date = todayStatic.getDate();
-      const day = () => {
-        switch (todayStatic.getDay()) {
-          case 1:
-            return "월요일";
-          case 2:
-            return "화요일";
-          case 3:
-            return "수요일";
-          case 4:
-            return "목요일";
-          case 5:
-            return "금요일";
-          default:
-            return "주말";
-        }
-      };
-      document.getElementById("today").innerText = `${month + 1}월 ${date}일 ${day()}`;
-
-      socket.emit("socket");
-      socket.emit("connectMsg", "사용자");
-
-      /* ---- 코드 수정 시작 ---- */
-      // 수정내역(05.06): 참여자 모두 접속시 자동 추첨기능 추가
-
-      // 랜덤 당첨자 뽑기 기능 (재사용함수)
-      const roulette = () => {
-        // 랜덤 번호와 id 비교
-        const chosenNum = Math.floor(Math.random() * lunchMate.length) + 1;
-        const winner = lunchMate.filter((user) => user.id === chosenNum);
-
-        const chosen = winner[0].name;
-        // 소켓: 클라이언트 객체
-        // 소켓이 set winner 이벤트를 보냄
-        return chosen;
-      };
-
-      // 클릭 시 roulette 실행
-      const rouletteOnClick = () => {
-        const chosen = roulette();
-        // 클릭 시 발생하는 이벤트 명 set winner
-        socket.emit("set winner", chosen);
-      };
-
-      // 참여자 모두 접속 시 roulette 자동 실행
-      const rouletteOnRenderAuto = () => {
-        const chosen = roulette();
-        // 참여자 접속 시 발생하는 이벤트 명 set winner auto
-        socket.emit("set winner auto", chosen);
-      };
-
-      // 버튼 클릭시 추첨 진행
-      document.getElementById("roulette-button").addEventListener("click", rouletteOnClick);
-
-      // 참여자 모두 접속 시(렌더링) 자동 추첨 진행
-      window.onload = rouletteOnRenderAuto;
-
-      /* ---- 코드 수정 끝 ---- */
-
-      socket.on("set winner", (chosen) => {
-        // 뽑기 시간 기록용 시간 계산
-        const todayLog = new Date();
-        const hour = todayLog.getHours() < 10 ? `0${todayLog.getHours()}` : todayLog.getHours();
-        const minutes = todayLog.getMinutes() < 10 ? `0${todayLog.getMinutes()}` : todayLog.getMinutes();
-
-        // 당첨자 표시 및 로그 기록 추가
-        document.getElementById("winner").innerText = `🎉당첨: ${chosen} 매니저님`;
-        var newLog = document.createElement("li");
-        newLog.className = "log";
-        newLog.innerHTML = `당첨자: ${chosen}M <span>(${hour}:${minutes})</span>`;
-        document.getElementById("log-list").appendChild(newLog);
-      });
-
-      socket.on("message", (msg) => {
-        console.log(msg);
-        const todayLog = new Date();
-        const hour = todayLog.getHours() < 10 ? `0${todayLog.getHours()}` : todayLog.getHours();
-        const minutes = todayLog.getMinutes() < 10 ? `0${todayLog.getMinutes()}` : todayLog.getMinutes();
-
-        var newLog = document.createElement("li");
-        newLog.className = "log";
-        newLog.innerHTML = `${msg} <span>(${hour}:${minutes})</span>`;
-        document.getElementById("log-list").appendChild(newLog);
-      });
-    </script>
+    <script src="js/main.js" defer></script>
+    <script src="js/aside.js" defer></script>
   </body>
 </html>

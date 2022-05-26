@@ -1,22 +1,23 @@
 const express = require("express");
 const app = express();
-const path = require("path");
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 // const port = process.env.PORT;
 const port = 8080;
+
 let connectUser = 0;
 let resultUser = 6;
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
-// public 정적 폴더 사용 (css적용)
+// public 정적 폴더 사용 (css, js적용)
 app.use(express.static("public"));
 
 io.on("connection", (socket) => {
   connectUser++;
   console.log("someone connected..", connectUser);
+
 
   /* ---- 코드 수정 시작 ---- */
 
@@ -35,8 +36,6 @@ io.on("connection", (socket) => {
       io.emit("set winner", chosen);
     }
   });
-
-  /* ---- 코드 수정 끝 ---- */
 
   socket.on("connectMsg", (msg) => {
     console.log(`connectMsg: ${msg}`);

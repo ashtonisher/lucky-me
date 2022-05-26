@@ -11,6 +11,11 @@ body::-webkit-scrollbar {width: 2px;}
 body::-webkit-scrollbar-thumb {background-color: #ffcccc;}
 body::-webkit-scrollbar-track {background-color: #a3081f;}
 
+/* body scroll */
+body::-webkit-scrollbar {width: 2px;}
+body::-webkit-scrollbar-thumb {background-color: #ffcccc;}
+body::-webkit-scrollbar-track {background-color: #a3081f;}
+
 /* main */
 #main-title {margin-bottom: 30px; font-weight: bold; font-size: 48px; color: #ff517f;}
 #today {color: #886655; font-size: 20px; font-weight: normal;}

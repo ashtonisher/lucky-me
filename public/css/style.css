@@ -1,8 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap&family=Ubuntu:wght@500&display=swap");
-body {font-family: "Ubuntu", "Noto Sans KR", san-serif; text-align: center; overflow: hidden;}
+html,body {width: 100%; height: 100%;}
+body {font-family: "Ubuntu", "Noto Sans KR", san-serif; text-align: center; overflow-x: hidden;}
 * {padding: 0;}
 li {list-style: none;}
 button {cursor: pointer;}
+
+/* body scroll */
+body::-webkit-scrollbar {width: 2px;}
+body::-webkit-scrollbar-thumb {background-color: #ffcccc;}
+body::-webkit-scrollbar-track {background-color: #a3081f;}
 
 /* main */
 #main-title {margin-bottom: 30px; font-weight: bold; font-size: 48px; color: #ff517f;}
@@ -12,13 +18,16 @@ button {cursor: pointer;}
 #roulette-button:hover {background: #ed798a;}
 
 /* log */
-#log-container {width: 500px; margin: 30px auto 0; background: #fff; border-radius: 0 0 15px 15px; border: 2px solid #ed798a;}
+#log-container {width: 500px; margin: 30px auto 0; background: #fff; border-radius: 0 0 15px 15px; border: 2px solid #ed798a; overflow: hidden;}
+#log-list::-webkit-scrollbar {width: 4px;}
+#log-list::-webkit-scrollbar-thumb {background-color: #ed798a;}
+#log-list::-webkit-scrollbar-track {background-color: #ffcccc;}
 #log-title {width: 100%; background: #ed798a; color: #fff; margin: 0; padding: 4px 0; font-size: 22px; font-weight: normal;}
-#log-list {margin: 0; padding: 4px 0 4px 10px; height: 520px; overflow-y: auto; font-size: 20px; text-align: left; color: #222;}
+#log-list {margin: 0; padding: 4px 0 4px 10px; height: 520px; overflow-y: scroll; font-size: 20px; text-align: left; color: #222;}
 .log span {color: #ddaaaa;}
 
 /* aside */
-#aside {display: flex; position:absolute; top: 0; right: 0; transition: 0.2s;}
+#aside {display: flex; position: fixed; top: 0; right: 0; transition: 0.2s;}
 #aside {right: -360px;}
 #aside.open {right: 0;}
 
@@ -33,7 +42,7 @@ button {cursor: pointer;}
 .aside-container {width: 360px; height: 100vh; background: #ffcccc;}
 
 /* menu */
-.menu-suggest {width: 250px; height: 184px; margin: 70px auto 0; background: #fff; border-radius: 16px;}
+.menu-suggest {width: 260px; height: 184px; margin: 70px auto 0; background: #fff; border-radius: 16px;}
 .menu-suggest .menu {background: #ed798a; color: #fff; font-size: 18px; font-weight: normal; padding: 4px 0;}
 /* .menu-suggest .menu-info .menu-img {width: 152.5px; height: 130px; margin: 0 auto; background: url('https://www.hsd.co.kr/images/58c3985780d74019b8683b452ed781c920220429034222.jpg') center / 100%;} */
 .menu-suggest .menu-info .menu-name {font-size: 20px; margin:26px 0 0; color: #222;}

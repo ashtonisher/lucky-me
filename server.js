@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
@@ -10,13 +11,14 @@ let resultUser = 6;
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
+// public 정적 폴더 사용 (css적용)
+app.use(express.static("public"));
 
 io.on("connection", (socket) => {
   connectUser++;
   console.log("someone connected..", connectUser);
 
   /* ---- 코드 수정 시작 ---- */
-  // 수정내역(05.06): 참여자 모두 접속시 자동 추첨기능 추가
 
   // 버튼 눌러 수동 추첨
   socket.on("set winner", (chosen) => {

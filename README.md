@@ -33,6 +33,15 @@ khchoi@banaple.co.kr
 - 참여자 수 변동: server.js의 result 변수 값 수정
 - 참여 명단 변동: index.html의 lunchMate 배열 수정
 
+<<<<<<< HEAD
+=======
+## 수정 내역
+
+- 22.04.06 배포
+- 22.05.06 자동 추첨 기능 추가
+- 22.05.25 메뉴 추천 기능 추가
+
+>>>>>>> 2944333 (repository init)
 ## 적용 기술
 
 ---
@@ -43,7 +52,11 @@ khchoi@banaple.co.kr
 - Express.js
 - Socket.io
 
+<<<<<<< HEAD
 ## 기여자 목록
+=======
+## Contributor
+>>>>>>> 2944333 (repository init)
 
 ---
 

@@ -5,82 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="당첨자 추첨기 (static)" />
     <title>Lucky Me (추첨기)</title>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap&family=Ubuntu:wght@500&display=swap");
-      body {
-        font-family: "Ubuntu", "Noto Sans KR", san-serif;
-        text-align: center;
-        /* padding-top: calc(50vh - 350px); */
-      }
-      * {
-        padding: 0;
-      }
-      li {
-        list-style: none;
-      }
-
-      #main-title {
-        margin-bottom: 30px;
-        font-weight: bold;
-        font-size: 48px;
-        color: #ff517f;
-      }
-      #today {
-        color: #886655;
-        font-size: 20px;
-        font-weight: normal;
-      }
-      #winner {
-        font-size: 40px;
-        font-weight: bold;
-        color: #eb4974;
-        /* color: #ff517f; */
-      }
-      #roulette-button {
-        border-radius: 8px;
-        background: #f1648a;
-        outline: none;
-        box-sizing: border-box;
-        padding: 12px 14px;
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-        border: none;
-        margin: 30px 0 30px;
-        cursor: pointer;
-      }
-      #roulette-button:hover {
-        background: #ed798a;
-      }
-      #log-container {
-        width: 500px;
-        margin: 30px auto 0;
-        background: #fff;
-        border-radius: 0 0 15px 15px;
-        border: 2px solid #ed798a;
-      }
-      #log-title {
-        width: 100%;
-        background: #ed798a;
-        color: #fff;
-        margin: 0;
-        padding: 4px 0;
-        font-size: 22px;
-        font-weight: normal;
-      }
-      #log-list {
-        margin: 0;
-        padding: 4px 0 4px 10px;
-        height: 520px;
-        overflow-y: auto;
-        font-size: 20px;
-        text-align: left;
-        color: #222;
-      }
-      .log span {
-        color: #ddaaaa;
-      }
-    </style>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
   </head>
   <body>
     <main>
@@ -92,6 +17,16 @@
         <h3 id="log-title">Log</h3>
         <ul id="log-list"></ul>
       </section>
+      <aside class="aside">
+        <button class="aside-toggle-button"></button>
+        <div class="aside-container">
+          <article class="menu-suggest">
+            <h3 class="menu-title">Menu</h3>
+            <p class="menu">추천메뉴</p>
+            <button class="menu-button">다른 메뉴 보기</button>
+          </articlec>
+        </div>
+      </aside>
     </main>
     <script src="/socket.io/socket.io.js"></script>
     <script>

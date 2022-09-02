@@ -4,11 +4,12 @@ const lunchMate = [
   { name: "강경일", id: 1 },
   { name: "강영서", id: 2 },
   { name: "이승재", id: 3 },
-  { name: "장민우", id: 4 },
-  { name: "최경환", id: 5 },
-  { name: "최성훈", id: 6 },
+  { name: "이진희", id: 4 },
+  { name: "장민우", id: 5 },
+  { name: "최경환", id: 6 },
 ];
-
+// 팀 내 호칭
+const callSign = '매니저';
 //날짜 표시 기능
 const todayStatic = new Date();
 const month = todayStatic.getMonth();
@@ -72,7 +73,7 @@ socket.on("set winner", (chosen) => {
     const hour = todayLog.getHours() < 10 ? `0${todayLog.getHours()}` : todayLog.getHours();
     const minutes = todayLog.getMinutes() < 10 ? `0${todayLog.getMinutes()}` : todayLog.getMinutes();
     // 당첨자 표시 및 로그 기록 추가
-    document.getElementById("winner").innerText = `🎉당첨: ${chosen} 매니저님`;
+    document.getElementById("winner").innerText = `🎉당첨: ${chosen} ${callSign}님`;
     var newLog = document.createElement("li");
     newLog.className = "log";
     newLog.innerHTML = `당첨자: ${chosen}M <span>(${hour}:${minutes})</span>`;

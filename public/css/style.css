@@ -4,6 +4,7 @@ body {font-family: "Ubuntu", "Noto Sans KR", san-serif; text-align: center; over
 * {padding: 0;}
 li {list-style: none;}
 button {cursor: pointer;}
+button:focus {outline: none;}
 
 /* body scroll */
 body::-webkit-scrollbar {width: 2px;}
@@ -49,5 +50,6 @@ body::-webkit-scrollbar-track {background-color: #a3081f;}
 .menu-suggest .menu-info .menu-price {font-size: 16px; color: #222;}
 .menu-suggest #menu-reload-button {background: none; border: none; margin: 20px 0 0; padding: 12px; font-size: 0; text-indent: -9999px; color: none; background-image: url('../img/reload.svg'); transition: 0.2s;}
 .menu-suggest #menu-reload-button:hover {transform: rotate(270deg);}
+
 
 

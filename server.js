@@ -18,9 +18,6 @@ io.on("connection", (socket) => {
   connectUser++;
   console.log("someone connected..", connectUser);
 
-
-  /* ---- 코드 수정 시작 ---- */
-
   // 버튼 눌러 수동 추첨
   socket.on("set winner", (chosen) => {
     if (connectUser === resultUser) {

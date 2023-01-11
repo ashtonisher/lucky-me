@@ -1,10 +1,11 @@
 {
-  "name": "lucky-me-static",
-  "version": "1.0.0",
-  "description": "roulette & chat socket.io app",
+  "name": "lucky-me",
+  "version": "1.1.0",
+  "description": "roulette & log socket.io app",
   "main": "index.html",
   "keywords": [
-    "roulette"
+    "roulette",
+    "random"
   ],
   "author": "khwan / khchoi@banaple.co.kr",
   "license": "MIT",

@@ -65,7 +65,7 @@ const asideToggle = (e) => {
   e.target.classList.toggle("open");
   document.getElementById("aside").classList.toggle("open");
   // 메뉴 열린 적 없으면 메뉴 추천 기능 자동 실행
-  if (hasOpened) {
+  if (!hasOpened) {
     !hasOpened;
     menuSuggestOnRenderAuto();
   }

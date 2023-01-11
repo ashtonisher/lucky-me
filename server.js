@@ -17,6 +17,12 @@ app.use(express.static("public"));
 io.on("connection", (socket) => {
   connectUser++;
   console.log("someone connected..", connectUser);
+  const req = socket.request;
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+  var address = socket.handshake.address;
+  console.log(address);
+  console.log('클라이언트 연결 : ', ip, socket.id);
 
   // 버튼 눌러 수동 추첨
   socket.on("set winner", (chosen) => {

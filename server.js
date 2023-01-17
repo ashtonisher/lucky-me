@@ -3,11 +3,18 @@ const app = express();
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-// const port = process.env.PORT;
-const port = 8080;
+const port = process.env.PORT;
+// const port = 8080;
 
+// console.log(users)
 let connectUser = 0;
-let resultUser = 6;
+let resultUser = 7;
+
+// const uuidv4 = require("uuid/v4");
+
+
+
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
@@ -37,6 +44,8 @@ io.on("connection", (socket) => {
   socket.on("set winner auto", (chosen) => {
     if (connectUser === resultUser) {
       io.emit("set winner", chosen);
+      let id = uuidv4();
+      logger.info()
     }
   });
 

@@ -1,11 +1,11 @@
-{
+members = {
 	"users": [ 
-		{ "name": "강경일", "id": 1, "lunch": true },
-		{ "name": "강영서", "id": 2, "lunch": true },
-		{ "name": "이승재", "id": 3, "lunch": true },
-		{ "name": "이진희", "id": 4, "lunch": true },
-		{ "name": "임준수", "id": 5, "lunch": true },
-		{ "name": "장민우", "id": 6, "lunch": true },
-		{ "name": "최경환", "id": 7, "lunch": true }
+		{ "name": "강경일", "id": 1, "isLunch": true },
+		{ "name": "강영서", "id": 2, "isLunch": true },
+		{ "name": "이승재", "id": 3, "isLunch": true },
+		{ "name": "이진희", "id": 4, "isLunch": true },
+		{ "name": "임준수", "id": 5, "isLunch": true },
+		{ "name": "장민우", "id": 6, "isLunch": true },
+		{ "name": "최경환", "id": 7, "isLunch": true }
 	]
 }

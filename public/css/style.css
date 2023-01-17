@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap&family=Ubuntu:wght@500&display=swap");
-html,body {width: 100%; height: 100%;}
-body {font-family: "Ubuntu", "Noto Sans KR", san-serif; text-align: center; overflow-x: hidden;}
+html,body {width: 100%; height: 100%; margin: 0;}
+body {font-family: "Ubuntu", "Noto Sans KR", san-serif; text-align: center; overflow-x: hidden; padding-top: 70px; box-sizing: border-box;}
 * {padding: 0;}
 li {list-style: none;}
 button {cursor: pointer;}
@@ -17,7 +17,7 @@ body::-webkit-scrollbar-thumb {background-color: #ffcccc;}
 body::-webkit-scrollbar-track {background-color: #a3081f;}
 
 /* main */
-#main-title {margin-bottom: 30px; font-weight: bold; font-size: 48px; color: #ff517f;}
+#main-title {margin: 0 0 30px; font-weight: bold; font-size: 48px; color: #ff517f;}
 #today {color: #886655; font-size: 20px; font-weight: normal;}
 #winner {font-size: 40px; font-weight: bold; color: #eb4974;}
 #roulette-button {border-radius: 8px; background: #f1648a; outline: none; box-sizing: border-box; padding: 12px 14px; color: #fff; font-size: 24px; font-weight: bold; border: none; margin: 30px 0 30px; cursor: pointer;}
@@ -25,9 +25,9 @@ body::-webkit-scrollbar-track {background-color: #a3081f;}
 
 /* log */
 #log-container {width: 500px; margin: 30px auto 0; background: #fff; border-radius: 0 0 15px 15px; border: 2px solid #ed798a; overflow: hidden;}
-#log-list::-webkit-scrollbar {width: 4px;}
-#log-list::-webkit-scrollbar-thumb {background-color: #a3081f;}
-#log-list::-webkit-scrollbar-track {background-color: #ffcccc;}
+.log-box::-webkit-scrollbar {width: 4px;}
+.log-box::-webkit-scrollbar-thumb {background-color: #a3081f;}
+.log-box::-webkit-scrollbar-track {background-color: #ffcccc;}
 #log-title {width: 100%; background: #ed798a; color: #fff; margin: 0; padding: 4px 0; font-size: 22px; font-weight: normal;}
 #log-list {margin: 0; padding: 4px 0 4px 10px; height: 520px; overflow-y: auto; font-size: 20px; text-align: left; color: #222;}
 .log span {color: #ddaaaa;}
@@ -45,16 +45,43 @@ body::-webkit-scrollbar-track {background-color: #a3081f;}
 #aside-toggle-button:hover::before {border: #ed798a;border-left: 3px solid #eb4974; border-bottom: 3px solid #eb4974;}
 
 /* aside-container */
-.aside-container {width: 360px; height: 100vh; background: #ffcccc;}
+.aside-container {width: 360px; height: 100vh; max-height: 100%; background: #ffcccc;}
 
+/* content-box (common) */
+.content-box {width: 260px; height: 184px; margin: 70px auto 0; background: #fff; border-radius: 16px;}
+.title {background: #ed798a; color: #fff; font-size: 18px; font-weight: normal; padding: 4px 0; margin: 0;}
 /* menu */
-.menu-suggest {width: 260px; height: 184px; margin: 70px auto 0; background: #fff; border-radius: 16px;}
-.menu-suggest .menu {background: #ed798a; color: #fff; font-size: 18px; font-weight: normal; padding: 4px 0;}
+.menu-suggest { margin-bottom: 200px; }
 /* .menu-suggest .menu-info .menu-img {width: 152.5px; height: 130px; margin: 0 auto; background: url('https://www.hsd.co.kr/images/58c3985780d74019b8683b452ed781c920220429034222.jpg') center / 100%;} */
 .menu-suggest .menu-info .menu-name {font-size: 20px; margin:26px 0 0; color: #222;}
 .menu-suggest .menu-info .menu-price {font-size: 16px; color: #222;}
 .menu-suggest #menu-reload-button {background: none; border: none; margin: 20px 0 0; padding: 12px; font-size: 0; text-indent: -9999px; color: none; background-image: url('../img/reload.svg'); transition: 0.2s;}
 .menu-suggest #menu-reload-button:hover {transform: rotate(270deg);}
 
-
-
+/* log box */
+.logger {
+    margin-top: auto;
+    height: 350px;
+    border: 2px solid #a3081f;
+    overflow: hidden;
+}
+.logger .title {
+    background-color: #fcfcfc;
+    padding: 6px 0;
+    border-bottom: 2px solid #a3081f;
+    color: #a3081f;
+    font-weight: bold;
+    border-radius: 16px 16px 0 0;
+}
+.logger .log-box {
+    max-height: 308px;
+    overflow-y: auto;
+}
+.logger .lucky-log-list {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0 0;
+}
+.logger .lucky-log-list li {
+    padding: 3px 0;
+}

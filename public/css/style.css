@@ -5,6 +5,8 @@ body {font-family: "Ubuntu", "Noto Sans KR", san-serif; text-align: center; over
 li {list-style: none;}
 button {cursor: pointer;}
 button:focus {outline: none;}
+.noti {color: #8c8c8c; font-size: 8px;}
+.noti .asterisk {color: #f1648a;}
 
 /* body scroll */
 body::-webkit-scrollbar {width: 2px;}
@@ -25,11 +27,12 @@ body::-webkit-scrollbar-track {background-color: #a3081f;}
 
 /* log */
 #log-container {width: 500px; margin: 30px auto 0; background: #fff; border-radius: 0 0 15px 15px; border: 2px solid #ed798a; overflow: hidden;}
-.log-box::-webkit-scrollbar {width: 4px;}
-.log-box::-webkit-scrollbar-thumb {background-color: #a3081f;}
-.log-box::-webkit-scrollbar-track {background-color: #ffcccc;}
+.log-content::-webkit-scrollbar {width: 4px;}
+.log-content::-webkit-scrollbar-thumb {background-color: #a3081f;}
+.log-content::-webkit-scrollbar-track {background-color: #ffcccc;}
 #log-title {width: 100%; background: #ed798a; color: #fff; margin: 0; padding: 4px 0; font-size: 22px; font-weight: normal;}
-#log-list {margin: 0; padding: 4px 0 4px 10px; height: 520px; overflow-y: auto; font-size: 20px; text-align: left; color: #222;}
+#log-list {margin: 0; padding: 4px 10px; height: 520px; overflow-y: auto; font-size: 20px; text-align: left; color: #222;}
+#log-list .log {display: flex; justify-content: space-between;}
 .log span {color: #ddaaaa;}
 
 /* aside */
@@ -45,43 +48,65 @@ body::-webkit-scrollbar-track {background-color: #a3081f;}
 #aside-toggle-button:hover::before {border: #ed798a;border-left: 3px solid #eb4974; border-bottom: 3px solid #eb4974;}
 
 /* aside-container */
-.aside-container {width: 360px; height: 100vh; max-height: 100%; background: #ffcccc;}
+.aside-container {width: 360px; height: 100vh; max-height: 100%; background: #ffcccc; display: flex; flex-direction: column;}
 
 /* content-box (common) */
-.content-box {width: 260px; height: 184px; margin: 70px auto 0; background: #fff; border-radius: 16px;}
+.content-box {width: 220px; height: 184px; margin: 70px auto 0; background: #fff; border-radius: 16px;}
 .title {background: #ed798a; color: #fff; font-size: 18px; font-weight: normal; padding: 4px 0; margin: 0;}
 /* menu */
-.menu-suggest { margin-bottom: 200px; }
+.menu-suggest {position: relative;}
 /* .menu-suggest .menu-info .menu-img {width: 152.5px; height: 130px; margin: 0 auto; background: url('https://www.hsd.co.kr/images/58c3985780d74019b8683b452ed781c920220429034222.jpg') center / 100%;} */
-.menu-suggest .menu-info .menu-name {font-size: 20px; margin:26px 0 0; color: #222;}
+.menu-suggest .menu-info .menu-name {font-size: 20px; margin:26px 0 0; color: #222; white-space: nowrap; text-overflow: clip;}
 .menu-suggest .menu-info .menu-price {font-size: 16px; color: #222;}
 .menu-suggest #menu-reload-button {background: none; border: none; margin: 20px 0 0; padding: 12px; font-size: 0; text-indent: -9999px; color: none; background-image: url('../img/reload.svg'); transition: 0.2s;}
 .menu-suggest #menu-reload-button:hover {transform: rotate(270deg);}
+.menu-suggest .menu-update {position: absolute; bottom: -5px; text-align: center; width: 100%;}
 
-/* log box */
-.logger {
+/* member box */
+.member-box {height: auto;}
+.member-box .title {}
+.member-box .members {}
+.member-box .members .member-list {margin:0;}
+.member-box .members .member-list li {font-size: 16px;}
+.member-box .members .member-list li input {display: none;}
+.member-box .members .member-list li input+label {position: relative;}
+.member-box .members .member-list li input+label::after {
+    display: block;
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #ddcccc;
+    border-radius: 10px;
+    position: absolute;
+    top: 5px;
+    left: -15px;
+}
+.member-box .members .member-list li input:checked + label::after {background: #22dddd;}
+
+/* aside log box */
+.log-box {
     margin-top: auto;
-    height: 350px;
-    border: 2px solid #a3081f;
+    background-color: #fcfcfc;
+    width: 90%;
+    height: 260px;
+    border-radius: 0;
     overflow: hidden;
 }
-.logger .title {
-    background-color: #fcfcfc;
+.log-box .title {
+    background-color: #ffcccc;
     padding: 6px 0;
-    border-bottom: 2px solid #a3081f;
     color: #a3081f;
     font-weight: bold;
-    border-radius: 16px 16px 0 0;
 }
-.logger .log-box {
-    max-height: 308px;
-    overflow-y: auto;
+.log-box .log-content {
+    height: 227px;
+    overflow-y: scroll;
 }
-.logger .lucky-log-list {
+.log-box .lucky-log-list {
     font-size: 16px;
     color: #555;
-    margin: 10px 0 0;
+    margin: 5px 0 0;
 }
-.logger .lucky-log-list li {
+.log-box .lucky-log-list li {
     padding: 3px 0;
 }

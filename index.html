@@ -1,62 +1,78 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="바나플 추첨기" />
-    <title>Lucky Me (추첨기)</title>
-    <link rel="shortcut icon" href="img/favicon.svg" type="image/x-icon" />
-    <!-- <link rel="manifest" href="manifest.json" /> -->
-    <link rel="stylesheet" href="css/style.css" type="text/css" />
-  </head>
-  <body>
-    <main>
-      <h1 id="main-title">Lucky Me</h1>
-      <h2 id="today"></h2>
-      <h2 id="winner">추첨이 필요합니다</h2>
-      <button id="roulette-button" type="button">추첨하기</button>
-      <section id="log-container">
-        <h3 id="log-title">Log</h3>
-        <ul id="log-list" class="log-box"></ul>
-      </section>
-      <aside id="aside">
-        <button id="aside-toggle-button"></button>
-        <div class="aside-container">
-          <article class="menu-suggest content-box">
-            <h3 class="menu title">오늘 뭐 먹지?</h3>
-            <section class="menu-info content">
-              <!-- <div class="menu-img"></div> -->
-              <p class="menu-name">추천메뉴</p>
-              <span class="menu-price">점심</span>
-            </section>
-            <button id="menu-reload-button">draw again</button>
-          </article>
-          <article class="logger content-box">
-            <h3 class="title">Lucky Log</h3>
-            <section class="log-box content">
-              <ul class="lucky-log-list">
-                <li>test_log_1</li>
-                <li>test_log_2</li>
-                <li>test_log_3</li>
-                <li>test_log_4</li>
-                <li>test_log_5</li>
-                <li>test_log_6</li>
-                <li>test_log_7</li>
-                <li>test_log_8</li>
-                <li>test_log_9</li>
-                <li>test_log_10</li>
-                <li>test_log_11</li>
-                <li>test_log_12</li>
-              </ul>
-            </section>
-          </article>
-        </div>
-      </aside>
-    </main>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="db/members.json" type="text/javascript"></script>
 
-    <script src="/js/main.js" type="module" defer></script>
-    <script src="/js/aside.js" defer></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="바나플 추첨기" />
+  <title>Lucky Me (추첨기)</title>
+  <link rel="shortcut icon" href="img/favicon.svg" type="image/x-icon" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+  <main>
+    <h1 id="main-title">Lucky Me</h1>
+    <h2 id="today"></h2>
+    <h2 id="winner">추첨이 필요합니다</h2>
+    <button id="roulette-button" type="button">추첨하기</button>
+    <section id="log-container">
+      <h3 id="log-title">Log</h3>
+      <ul id="log-list" class="log-content"></ul>
+    </section>
+    <aside id="aside">
+      <button id="aside-toggle-button"></button>
+      <div class="aside-container">
+        <article class="menu-suggest content-box">
+          <h3 class="menu title">🍛🍜🍱🍚</h3>
+          <section class="menu-info content">
+            <p class="menu-name">추천메뉴</p>
+            <span class="menu-price">1,000원</span>
+          </section>
+          <button id="menu-reload-button">draw again</button>
+          <p class="noti menu-update">
+            <span class="asterisk">*</span>업데이트: 2023.01.20
+          </p>
+        </article>
+        <article class="member-box content-box">
+          <h3 class="title">Member</h3>
+          <section class="members content">
+            <ul class="member-list">
+              <li><input id="check01" type="checkbox" checked /><label for="check01">강경일</label></li>
+              <li><input id="check02" type="checkbox" checked /><label for="check02">강영서</label></li>
+              <li><input id="check03" type="checkbox" checked /><label for="check03">이승재</label></li>
+              <li><input id="check04" type="checkbox" /><label for="check04">이진희</label></li>
+              <li><input id="check05" type="checkbox" checked /><label for="check05">임준수</label></li>
+              <li><input id="check06" type="checkbox" checked /><label for="check06">장민우</label></li>
+              <li><input id="check07" type="checkbox" checked /><label for="check07">최경환</label></li>
+            </ul>
+          </section>
+        </article>
+        <article class="log-box content-box">
+          <h3 class="title">Lucky Log</h3>
+          <section class="log-content content">
+            <ul class="lucky-log-list">
+              <li>test_log_1</li>
+              <li>test_log_2</li>
+              <li>test_log_3</li>
+              <li>test_log_4</li>
+              <li>test_log_5</li>
+              <!-- <li>test_log_6</li>
+              <li>test_log_7</li>
+              <li>test_log_8</li>
+              <li>test_log_9</li>
+              <li>test_log_10</li> -->
+            </ul>
+          </section>
+        </article>
+      </div>
+    </aside>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="db/members.json" type="text/javascript"></script>
+  <script src="/js/main.js" type="module"></script>
+  <script src="/js/aside.js"></script>
+</body>
+
 </html>

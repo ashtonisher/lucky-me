@@ -27,9 +27,9 @@ body::-webkit-scrollbar-track {background-color: #a3081f;}
 
 /* log */
 #log-container {width: 500px; margin: 30px auto 0; background: #fff; border-radius: 0 0 15px 15px; border: 2px solid #ed798a; overflow: hidden;}
-.log-content::-webkit-scrollbar {width: 4px;}
-.log-content::-webkit-scrollbar-thumb {background-color: #a3081f;}
-.log-content::-webkit-scrollbar-track {background-color: #ffcccc;}
+.scroll-content::-webkit-scrollbar {width: 4px;}
+.scroll-content::-webkit-scrollbar-thumb {background-color: #a3081f;}
+.scroll-content::-webkit-scrollbar-track {background-color: #ffcccc;}
 #log-title {width: 100%; background: #ed798a; color: #fff; margin: 0; padding: 4px 0; font-size: 22px; font-weight: normal;}
 #log-list {margin: 0; padding: 4px 10px; height: 520px; overflow-y: auto; font-size: 20px; text-align: left; color: #222;}
 #log-list .log {display: flex; justify-content: space-between;}
@@ -63,10 +63,11 @@ body::-webkit-scrollbar-track {background-color: #a3081f;}
 .menu-suggest .menu-update {position: absolute; bottom: -5px; text-align: center; width: 100%;}
 
 /* member box */
-.member-box {height: auto;}
-.member-box .title {}
-.member-box .members {}
-.member-box .members .member-list {margin:0;}
+.member-box {height: auto; overflow: hidden;}
+
+.member-box .members {height: 130px; overflow-y: auto;}
+.member-box .members::-webkit-scrollbar-track {background-color: #fff;}
+.member-box .members .member-list {height: 110px; margin: 5px 0;}
 .member-box .members .member-list li {font-size: 16px;}
 .member-box .members .member-list li input {display: none;}
 .member-box .members .member-list li input+label {position: relative;}

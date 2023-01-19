@@ -1,6 +1,6 @@
 // 한솥 메뉴 리스트
 const menulist = [
-  { name: "아보카도 게맛살 명란비빔밥", price: 6500 },
+  { name: "반찬 사골 우거지 곰탕", price: 4900(6500) },
   { name: "아보카도 소고기 명란비빔밥", price: 6500 },
   { name: "핫 치즈 닭갈비덮밥", price: 5900 },
   { name: "오리지널 치즈 닭갈비덮밥", price: 5900 },
@@ -21,13 +21,6 @@ const menulist = [
   { name: "돈까스도련님", price: 4500 },
   { name: "제육볶음", price: 4200 },
   { name: "돈치스팸", price: 4900 },
-  { name: "제육 김치찌개 정식", price: 8200 },
-  { name: "제육 김치 부대찌개 정식", price: 8500 },
-  { name: "돈치스팸 김치 부대찌개 정식", price: 8500 },
-  { name: "빅치킨마요 김치 부대찌개 정식", price: 7500 },
-  { name: "치킨마요 김치 부대찌개 정식", price: 6900 },
-  { name: "빅치킨마요 김치찌개 정식", price: 7000 },
-  { name: "치킨마요 김치찌개 정식", price: 6500 },
   { name: "메가스팸마요", price: 5600 },
   { name: "스팸마요", price: 3700 },
   { name: "메가치킨마요", price: 5800 },

@@ -2,9 +2,15 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
+// logger
+const logger = require("./public/winston");
+
 const io = new Server(server);
 const port = process.env.PORT;
 // const uuidv4 = require("uuid/v4");
+
+// logger.info(`당첨자${counter}: ${chosen}`);
+// logger.error('Get index error');
 
 
 /** postgres connect */
@@ -92,6 +98,7 @@ app.get("/", (req, res) => {
 
 // let resultUser;
 let resultUser = 5;
+let counter = 0;
 
 // public 정적 폴더 사용 (css, js적용)
 app.use(express.static("public"));
@@ -110,7 +117,11 @@ io.on("connection", (socket) => {
   // 버튼 눌러 수동 추첨
   socket.on("set winner", (chosen) => {
     if (connectUser === resultUser) {
+      counter++;
       io.emit("set winner", chosen);
+      console.log(`당첨자${counter}: ${chosen}`);
+      logger.info(`당첨자${counter}: ${chosen}`);
+      
     } else {
       io.emit("message", `접속자가 ${resultUser} 명이 되어야 추첨가능합니다.`);
     }

@@ -34,13 +34,13 @@ var socket = io();
 let lunchMate = JSON.parse(JSON.stringify(members)).users;
 const userLength = lunchMate.filter((user) => {return user.isLunch}).length;
 
+// member.json의 내용을 서버로 전송
 const config = {
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
     Accept: 'application/json; text/plain; charset=UTF-8',
   },
 };
-
 
 async() => {
   try {
@@ -53,7 +53,7 @@ async() => {
 }
 
 // 배열 원소 무작위 정렬
-let randomize = [...lunchMate].sort(() => Math.random() - 0.5);
+// let randomize = [...lunchMate].sort(() => Math.random() - 0.5);
 // console.log(randomize);
  
 // 팀 내 호칭

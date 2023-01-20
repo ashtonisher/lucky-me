@@ -1,34 +1,16 @@
 // 한솥 메뉴 리스트
 
 // 메뉴 담을 배열
-// 메뉴 json data: menuBowl, menuBox, menuNewSale, menuPremium, menuSide
 let menuList = [];
+// menu: menu.json
+menu.forEach(({subdata}) => {
+  subdata.forEach(({goodsList}) => {
+    goodsList.forEach(data => {
+      menuList.push(data);
+    });
+  });
+});
 
-menuBowl.subdata.forEach((sd) => {
-  sd.goodsList.forEach((menu) => {
-    menuList.push(menu);
-  })
-});
-menuBox.subdata.forEach((sd) => {
-  sd.goodsList.forEach((menu) => {
-    menuList.push(menu);
-  })
-});
-menuNewSale.subdata.forEach((sd) => {
-  sd.goodsList.forEach((menu) => {
-    menuList.push(menu);
-  })
-});
-menuPremium.subdata.forEach((sd) => {
-  sd.goodsList.forEach((menu) => {
-    menuList.push(menu);
-  })
-});
-menuSide.subdata.forEach((sd) => {
-  sd.goodsList.forEach((menu) => {
-    menuList.push(menu);
-  })
-});
 
 let hasOpened = false;
 // aside 열기/닫기 기능
@@ -38,7 +20,7 @@ const asideToggle = (e) => {
   // 메뉴 열린 적 없으면 메뉴 추천 기능 자동 실행
   if (!hasOpened) {
     !hasOpened;
-    menuSuggestOnRenderAuto();
+    menuSuggest();
   }
 };
 
@@ -47,7 +29,7 @@ const menuSuggest = () => {
   document.getElementsByClassName("menu-name")[0].innerText = '메뉴추천중...';
   const menuIndex = Math.floor(Math.random() * menuList.length - 1);
   const suggestion = menuList[menuIndex];
-  const categoryReg = /\[[ㄱ-ㅎ가-힣$]+\]\s*/g; // 행사, 반찬, 신메뉴 타이틀 제거
+  const categoryReg = /\[[ㄱ-ㅎ가-힣$]+\]\s*/g; // [행사], [반찬], [신메뉴] 등 카테고리 제거
 
   let { title, price } = suggestion;
   
@@ -64,10 +46,7 @@ const menuSuggestOnClick = (e) => {
   e.target.animate([{ transform: "rotate(630deg)" }], 200);
   menuSuggest();
 };
-// 접속 시 자동 메뉴 추천
-const menuSuggestOnRenderAuto = () => {
-  menuSuggest();
-};
+
 // aside 열기 버튼 클릭시 aside 열기/닫기 기능
 document.getElementById("aside-toggle-button").addEventListener("click", asideToggle);
 // menu reload 버튼 클릭시 메뉴 재추천

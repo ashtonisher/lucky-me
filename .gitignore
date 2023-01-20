@@ -25,3 +25,9 @@ yarn.lock
 # copied
 *copy.*
 
+# logs
+/logs
+
+.log
+.error.log
+*-audit.json

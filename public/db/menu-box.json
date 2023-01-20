@@ -1,0 +1,48 @@
+menuBox = {
+	"cate1Info": { "idx": 3, "parent": 0, "name": "사각도시락" },
+	"subdata": [
+		{
+			"goodsList": [
+				{
+					"idx": 242,
+					"title": "돈까스도련님고기고기",
+					"price": 6300,
+					"imagePath": "https://www.hsd.co.kr/images/83bfa7bfe33944b697c108ae5dc9901d20220131094712.jpg",
+					"calorie": 0.0,
+					"optionMenu": null,
+					"cate1": 3,
+					"cate2": 9,
+					"newYn": "N"
+				},
+				{
+					"idx": 241,
+					"title": "탕수육도련님고기고기",
+					"price": 6000,
+					"imagePath": "https://www.hsd.co.kr/images/629a5788d03749a1a2551029a04cfced20220131094742.jpg",
+					"cate1": 3,
+					"cate2": 9,
+					"newYn": "N"
+				},
+				{
+					"idx": 11,
+					"title": "새치 고기고기",
+					"price": 7000,
+					"imagePath": "https://www.hsd.co.kr/images/4b47a4163a994725930822f2666e1eec20220131094812.jpg",
+					"cate1": 3,
+					"cate2": 9,
+					"newYn": "N"
+				},
+				{
+					"idx": 10,
+					"title": "돈치 고기고기",
+					"price": 6000,
+					"imagePath": "https://www.hsd.co.kr/images/833228eb979f4e5d91209a7d7e74860d20220131094842.jpg",
+					"cate1": 3,
+					"cate2": 9,
+					"newYn": "N"
+				}
+			],
+			"cate2Info": { "idx": 9, "parent": 3, "name": "고기고기시리즈" }
+		}
+	]
+}

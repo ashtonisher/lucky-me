@@ -1,0 +1,37 @@
+menuPremium = {
+	"cate1Info": { "idx": 2, "parent": 0, "name": "프리미엄·고메이" },
+	"subdata": [
+		{
+			"goodsList": [
+				{
+					"idx": 4,
+					"title": "매화",
+					"price": 10500,
+					"imagePath": "https://www.hsd.co.kr/images/1b159eb1c1c34fe0bf9ba446576f4c9320221124110425.jpg",
+					"cate1": 2,
+					"cate2": 24,
+					"newYn": "N"
+				},
+				{
+					"idx": 6,
+					"title": "진달래",
+					"price": 7800,
+					"imagePath": "https://www.hsd.co.kr/images/c6ea345112d1413fa0d2f59ba4f04e2c20220131093728.jpg",
+					"cate1": 2,
+					"cate2": 24,
+					"newYn": "N"
+				},
+				{
+					"idx": 5,
+					"title": "개나리",
+					"price": 8500,
+					"imagePath": "https://www.hsd.co.kr/images/cdcae80fdae3466ca9c4e35956629f3620221124110442.jpg",
+					"cate1": 2,
+					"cate2": 24,
+					"newYn": "N"
+				}
+			],
+			"cate2Info": { "idx": 24, "parent": 2, "name": "프리미엄" }
+		}
+	]
+}

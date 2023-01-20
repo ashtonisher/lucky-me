@@ -10,7 +10,6 @@ self.addEventListener('push', (event) => {
 // 
 self.addEventListener('notificationclick', (event) => {
 	clients.openWindow(event.notification.data.link);
-    alert('wh5at')
 	// clients.openWindow(event.notification.data.link);
 });
 // serviceWorker 설치 완료시

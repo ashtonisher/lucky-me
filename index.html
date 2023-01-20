@@ -29,22 +29,20 @@
             <p class="menu-name">추천메뉴</p>
             <span class="menu-price">1,000원</span>
           </section>
-          <button id="menu-reload-button">draw again</button>
-          <p class="noti menu-update">
-            <span class="asterisk">*</span>업데이트: 2023.01.20
-          </p>
+          <button id="menu-reload-button">draw</button>
+          <p class="noti menu-update">Update: 2023.01.20</p>
         </article>
         <article class="member-box content-box">
           <h3 class="title">Member</h3>
           <section class="members scroll-content content">
             <ul class="member-list">
-              <li><input id="check01" type="checkbox" checked /><label for="check01">강경일</label></li>
-              <li><input id="check02" type="checkbox" checked /><label for="check02">강영서</label></li>
-              <li><input id="check03" type="checkbox" checked /><label for="check03">이승재</label></li>
-              <li><input id="check04" type="checkbox" /><label for="check04">이진희</label></li>
-              <li><input id="check05" type="checkbox" checked /><label for="check05">임준수</label></li>
-              <li><input id="check06" type="checkbox" checked /><label for="check06">장민우</label></li>
-              <li><input id="check07" type="checkbox" checked /><label for="check07">최경환</label></li>
+              <li><input id="member01" type="checkbox" checked /><label for="member01">강경일</label></li>
+              <li><input id="member02" type="checkbox" /><label for="member02">강영서</label></li>
+              <li><input id="member03" type="checkbox" checked /><label for="member03">이승재</label></li>
+              <!-- <li><input id="member04" type="checkbox" /><label for="member04">이진희</label></li> -->
+              <li><input id="member05" type="checkbox" checked /><label for="member04">임준수</label></li>
+              <li><input id="member06" type="checkbox" checked /><label for="member05">장민우</label></li>
+              <li><input id="member07" type="checkbox" checked /><label for="member06">최경환</label></li>
             </ul>
           </section>
         </article>
@@ -71,6 +69,11 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="db/members.json" type="text/javascript"></script>
+  <script src="db/menu-bowl.json" type="text/javascript"></script>
+  <script src="db/menu-box.json" type="text/javascript"></script>
+  <script src="db/menu-newsale.json" type="text/javascript"></script>
+  <script src="db/menu-premium.json" type="text/javascript"></script>
+  <script src="db/menu-side.json" type="text/javascript"></script>
   <script src="/js/main.js" type="module"></script>
   <script src="/js/aside.js"></script>
 </body>

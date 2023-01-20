@@ -101,8 +101,8 @@ const roulette = () => {
   // 랜덤 번호와 id 비교
   const chosenNum = Math.floor(Math.random() * userLength);
   const winner = lunchMate.filter((user, idx) => idx === chosenNum);
-  console.log(chosenNum)
-  console.log(winner)
+  // console.log(chosenNum)
+  // console.log(winner)
   const chosen = winner[0].name;
   // 소켓: 클라이언트 객체
   // 소켓이 set winner 이벤트를 보냄

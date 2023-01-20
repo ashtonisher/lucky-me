@@ -1,0 +1,204 @@
+menuNewSale = {
+	"cate1Info": { "idx": 1, "parent": 0, "name": "신메뉴/행사 " },
+	"subdata": [
+		{
+			"goodsList": [
+				{
+					"idx": 467,
+					"title": "[반찬] 사골 우거지 곰탕",
+					"price": 4900,
+					"imagePath": "https://www.hsd.co.kr/images/082a6415589540a989886efc051eb4ba20221130045346.jpg",
+					"cate1": 1,
+					"cate2": 49,
+					"newYn": "Y"
+				},
+				{
+					"idx": 466,
+					"title": "참치야채 감초고추장 사골 우거지 곰탕 정식",
+					"price": 7500,
+					"imagePath": "https://www.hsd.co.kr/images/01f41232bc484b018512628b6eb4d8ee20221130043845.jpg",
+					"cate1": 1,
+					"cate2": 49,
+					"newYn": "Y"
+				},
+				{
+					"idx": 465,
+					"title": "빅치킨마요 사골 우거지 곰탕 정식",
+					"price": 7900,
+					"imagePath": "https://www.hsd.co.kr/images/b61743209f044df8ae045e9451acde0a20221130043501.jpg",
+					"cate1": 1,
+					"cate2": 49,
+					"newYn": "Y"
+				},
+				{
+					"idx": 464,
+					"title": "제육 사골 우거지 곰탕 정식",
+					"price": 8900,
+					"imagePath": "https://www.hsd.co.kr/images/8d5bc7399cab43809a668b352484b73e20221130043153.jpg",
+					"cate1": 1,
+					"cate2": 49,
+					"newYn": "Y"
+				},
+				{
+					"idx": 463,
+					"title": "사골 우거지 곰탕",
+					"price": 6500,
+					"imagePath": "https://www.hsd.co.kr/images/9a09164679c840a08d3a00460a4ff10520221130042724.jpg",
+					"cate1": 1,
+					"cate2": 49,
+					"newYn": "Y"
+				},
+				{
+					"idx": 462,
+					"title": "알통팩(알찬 통다리 치킨팩)",
+					"price": 11900,
+					"imagePath": "https://www.hsd.co.kr/images/d0a227f9ecdf42f689f8f431a01b42c920221130042032.jpg",
+					"cate1": 1,
+					"cate2": 49,
+					"newYn": "Y"
+				},
+				{
+					"idx": 459,
+					"title": "해바라기",
+					"price": 10000,
+					"imagePath": "https://www.hsd.co.kr/images/e76a72d6982441cbb7e7866d10ac406a20220930105457.jpg",
+					"cate1": 1,
+					"cate2": 49,
+					"newYn": "Y"
+				}
+			],
+			"cate2Info": { "idx": 49, "parent": 1, "name": "신메뉴" }
+		},
+		{
+			"goodsList": [
+				{
+					"idx": 441,
+					"title": "[행사] 숯불직화구이 덮밥",
+					"price": 4900,
+					"imagePath": "https://www.hsd.co.kr/images/13006028b8e547d0a6a28f5d3e44cc6220221229053045.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 442,
+					"title": "[행사] 진달래",
+					"price": 6700,
+					"imagePath": "https://www.hsd.co.kr/images/592f7e63189f4a3f8b3ed042249d1d0a20221229053525.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 443,
+					"title": "[행사] 오리지널 치즈 닭갈비 덮밥",
+					"price": 4900,
+					"imagePath": "https://www.hsd.co.kr/images/b1b5ff7df32e41f6987a8053fe41113820221229054057.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 444,
+					"title": "[행사] 핫 치즈 닭갈비 덮밥",
+					"price": 4900,
+					"imagePath": "https://www.hsd.co.kr/images/c849915c353348fd9342b010b9fab40020221229054249.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 445,
+					"title": "[행사] 동백",
+					"price": 5200,
+					"imagePath": "https://www.hsd.co.kr/images/a5bd6326ae514a76b4d0246b7b47a74f20221229054447.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 446,
+					"title": "[행사] 새치 고기고기",
+					"price": 6000,
+					"imagePath": "https://www.hsd.co.kr/images/d5516c5534674cabafd420f36c4a9af620221229054548.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 448,
+					"title": "[행사] 잡채볶음밥(오리지널)",
+					"price": 4300,
+					"imagePath": "https://www.hsd.co.kr/images/e62546aec9e54d3c9abfb0cd3bb72b9220221229054951.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 450,
+					"title": "[행사] 잡채볶음밥(중화풍 매운맛)",
+					"price": 4500,
+					"imagePath": "https://www.hsd.co.kr/images/dbfc53ba4bf74bff8ebd20a4cb647a8a20221229055123.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 447,
+					"title": "[행사] 빅치킨마요 김치 부대찌개 정식",
+					"price": 6600,
+					"imagePath": "https://www.hsd.co.kr/images/669cc7d96e0d451789cdc552c6e1aece20221229054649.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 449,
+					"title": "[행사] 스팸 김치볶음밥",
+					"price": 3900,
+					"imagePath": "https://www.hsd.co.kr/images/6bfb6d5f33374f87aa8f2b36274db1dd20221229055547.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 468,
+					"title": "[행사] 알돈팩(알찬 왕돈까스팩)",
+					"price": 9900,
+					"imagePath": "https://www.hsd.co.kr/images/5c64f9bb6af84959b6be7231d8442f7f20221229055801.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 451,
+					"title": "[행사] 토핑 - 토네이도 소세지",
+					"price": 1000,
+					"imagePath": "https://www.hsd.co.kr/images/69b4af479d2049b6be4a9a6a341a920620221230110030.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 453,
+					"title": "[행사] 토핑 - 스팸",
+					"price": 800,
+					"imagePath": "https://www.hsd.co.kr/images/d4796e98db1b4d55b6d5d880adb7645d20221230110009.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				},
+				{
+					"idx": 452,
+					"title": "[행사] 토핑 - 치킨 2조각",
+					"price": 1300,
+					"imagePath": "https://www.hsd.co.kr/images/45a6725baa6248a6872cdac4e58c352820221230110019.jpg",
+					"cate1": 1,
+					"cate2": 52,
+					"newYn": "N"
+				}
+			],
+			"cate2Info": { "idx": 52, "parent": 1, "name": "행사" }
+		}
+	]
+}

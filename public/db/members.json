@@ -3,9 +3,8 @@ members = {
 		{ "name": "강경일", "id": 1, "isLunch": true },
 		{ "name": "강영서", "id": 2, "isLunch": false },
 		{ "name": "이승재", "id": 3, "isLunch": true },
-		{ "name": "이진희", "id": 4, "isLunch": false },
-		{ "name": "임준수", "id": 5, "isLunch": true },
-		{ "name": "장민우", "id": 6, "isLunch": true },
-		{ "name": "최경환", "id": 7, "isLunch": true }
+		{ "name": "임준수", "id": 4, "isLunch": true },
+		{ "name": "장민우", "id": 5, "isLunch": true },
+		{ "name": "최경환", "id": 6, "isLunch": true }
 	]
 }

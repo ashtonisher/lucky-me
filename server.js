@@ -91,7 +91,7 @@ app.get("/", (req, res) => {
 });
 
 // let resultUser;
-let resultUser = 6;
+let resultUser = 5;
 
 // public 정적 폴더 사용 (css, js적용)
 app.use(express.static("public"));

@@ -3,3 +3,8 @@ Dockerfile
 .dockerignore
 node_modules
 .git
+
+windston.js
+ngrok-skip.js
+
+*copy.*

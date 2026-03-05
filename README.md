@@ -19,9 +19,9 @@
    ```env
    PORT=7777
    ```
-3. 서버 실행
+3. 서버 실행(로컬)
    ```bash
-   npm run start
+   npm run dev
    ```
 4. 브라우저에서 `http://localhost:7777` 접속
 

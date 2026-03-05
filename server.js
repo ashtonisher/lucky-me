@@ -5,7 +5,7 @@ const { Server } = require("socket.io");
 const { users = [] } = require("./public/db/members.json");
 
 const io = new Server(server);
-const port = process.env.PORT;
+const port = process.env.PORT || 7777;
 
 let connectUser = 0;
 

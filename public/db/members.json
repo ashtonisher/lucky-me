@@ -1,10 +1,9 @@
-members = {
-	"users": [ 
-		{ "name": "강경일", "id": 1, "isLunch": true },
-		{ "name": "강영서", "id": 2, "isLunch": false },
-		{ "name": "이승재", "id": 3, "isLunch": true },
-		{ "name": "임준수", "id": 4, "isLunch": true },
-		{ "name": "장민우", "id": 5, "isLunch": true },
-		{ "name": "최경환", "id": 6, "isLunch": true }
-	]
+{
+  "users": [
+    { "name": "멤버1", "isLunch": true },
+    { "name": "멤버2", "isLunch": true },
+    { "name": "멤버3", "isLunch": true },
+    { "name": "멤버4", "isLunch": true },
+    { "name": "멤버5", "isLunch": true }
+  ]
 }

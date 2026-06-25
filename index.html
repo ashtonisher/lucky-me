@@ -52,6 +52,16 @@
       <section id="log-container">
         <h3 id="log-title">Log</h3>
         <ul id="log-list" class="scroll-content"></ul>
+        <div id="chat-input-area">
+          <input
+            id="chat-input"
+            type="text"
+            maxlength="200"
+            placeholder="메시지 입력..."
+            autocomplete="off"
+          />
+          <button id="chat-send" type="button">전송</button>
+        </div>
       </section>
     </main>
     <button id="nickname-floating" type="button"></button>
@@ -59,12 +69,15 @@
       <div id="nickname-modal-box">
         <button id="nickname-close" type="button">✕</button>
         <h2>이름 설정</h2>
-        <input
-          id="nickname-input"
-          type="text"
-          maxlength="10"
-          placeholder="이름 (최대 10자)"
-        />
+        <div id="nickname-input-row">
+          <input
+            id="nickname-input"
+            type="text"
+            maxlength="10"
+            placeholder="이름 (최대 10자)"
+          />
+          <button id="nickname-random" type="button" title="랜덤 닉네임">🎲</button>
+        </div>
         <p id="nickname-error">사용할 이름을 입력하세요</p>
         <button id="nickname-confirm" type="button">확인</button>
       </div>

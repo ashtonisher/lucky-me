@@ -49,11 +49,11 @@ if (process.env.OPEN_BROWSER === "true") {
       body = "🎉 당첨: 홍길동 님";
     }
     notify(targets, {
-title: "Lucky Me [테스트]",
-body,
-icon: "/img/lucky-me-icon_120.png",
-url: "/",
-});
+      title: "Lucky Me [테스트]",
+      body,
+      icon: "/img/lucky-me-icon_120.png",
+      url: "/",
+    });
     res.json({ ok: true, type, sent: targets.length });
   });
 }
@@ -98,20 +98,20 @@ function sendWinnerNotification(winner) {
 
 // 평일 오전 11시: 미접속 구독자에게만 발송
 cron.schedule(
-"0 11 * * 1-5",
-() => {
-  const targets = subscriptions.filter(
-(s) => !activeEndpoints.has(s.endpoint),
-);
-  notify(targets, {
-    title: "Lucky Me",
-    body: "🍽️ 추첨 시간입니다! 사이트에 접속하세요.",
-    icon: "/img/lucky-me-icon_120.png",
-    tag: "lucky-me-schedule",
-    url: "/",
-  });
-},
-{ timezone: "Asia/Seoul" },
+  "0 11 * * 1-5",
+  () => {
+    const targets = subscriptions.filter(
+      (s) => !activeEndpoints.has(s.endpoint),
+    );
+    notify(targets, {
+      title: "Lucky Me",
+      body: "🍽️ 추첨 시간입니다! 사이트에 접속하세요.",
+      icon: "/img/lucky-me-icon_120.png",
+      tag: "lucky-me-schedule",
+      url: "/",
+    });
+  },
+  { timezone: "Asia/Seoul" },
 );
 
 const { randomNickname, releaseNickname, previewNickname } = require("./nickname");
@@ -128,9 +128,9 @@ io.on("connection", (socket) => {
   const defaultName = randomNickname();
   connectedUsers[socket.id] = defaultName;
   io.emit("users:update", {
-count: connectUser,
-users: Object.values(connectedUsers),
-});
+    count: connectUser,
+    users: Object.values(connectedUsers),
+  });
   socket.emit("init:nickname", defaultName);
 
   // 닉네임 설정
@@ -142,14 +142,14 @@ users: Object.values(connectedUsers),
     );
     if (isDuplicate) {
       if (callback)
-callback({ ok: false, message: "이미 사용 중인 닉네임입니다." });
+        callback({ ok: false, message: "이미 사용 중인 닉네임입니다." });
       return;
     }
     connectedUsers[socket.id] = trimmed;
     io.emit("users:update", {
-count: connectUser,
-users: Object.values(connectedUsers),
-});
+      count: connectUser,
+      users: Object.values(connectedUsers),
+    });
     if (callback) callback({ ok: true });
   });
 
@@ -199,18 +199,21 @@ users: Object.values(connectedUsers),
     io.emit("message", msg);
   });
 
+  socket.on("chat:send", (text) => {
+    const name = connectedUsers[socket.id] || "익명";
+    const trimmed = text?.trim().slice(0, 200);
+    if (!trimmed) return;
+    io.emit("chat:message", { name, text: trimmed, from: socket.id });
+  });
+
   socket.on("disconnect", () => {
     if (connectUser > 0) connectUser--;
-releaseNickname(connectedUsers[socket.id]);
-releaseNickname(connectedUsers[socket.id]);
-    delete connectedUsers[soc
-et.id];
-,
-
+    releaseNickname(connectedUsers[socket.id]);
+    delete connectedUsers[socket.id];
     io.emit("users:update", {
-count: connectUser,
-users: Object.values(connectedUsers),
-});
+      count: connectUser,
+      users: Object.values(connectedUsers),
+    });
     const endpoint = socket.data.pushEndpoint;
     if (endpoint) activeEndpoints.delete(endpoint);
   });
@@ -221,11 +224,11 @@ server.listen(port, () => {
   if (process.env.OPEN_BROWSER === "true") {
     const url = `http://localhost:${port}`;
     const cmd =
-process.platform === "win32"
-? `start ${url}`
-: process.platform === "darwin"
-? `open ${url}`
-: `xdg-open ${url}`;
+      process.platform === "win32"
+        ? `start ${url}`
+        : process.platform === "darwin"
+          ? `open ${url}`
+          : `xdg-open ${url}`;
     require("child_process").exec(cmd);
   }
 });

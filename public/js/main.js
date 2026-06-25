@@ -183,6 +183,37 @@ socket.on("message", (msg) => {
   document.getElementById("log-list").appendChild(li);
 });
 
+// ── 채팅 ─────────────────────────────────────────────────
+const logList = document.getElementById("log-list");
+
+const appendChatMessage = ({ name, text, from }) => {
+  const t = new Date();
+  const hh = String(t.getHours()).padStart(2, "0");
+  const mm = String(t.getMinutes()).padStart(2, "0");
+  const li = document.createElement("li");
+  const isMine = from === socket.id;
+  li.className = `log chat-message ${isMine ? "chat-mine" : "chat-other"}`;
+  const displayName = isMine ? "나" : name;
+  li.innerHTML = `<span class="chat-name">${displayName}</span><span class="chat-text">${text}</span><span class="chat-time">${hh}:${mm}</span>`;
+  logList.appendChild(li);
+  logList.scrollTop = logList.scrollHeight;
+};
+
+socket.on("chat:message", appendChatMessage);
+
+const sendChat = () => {
+  const input = document.getElementById("chat-input");
+  const text = input.value.trim();
+  if (!text) return;
+  socket.emit("chat:send", text);
+  input.value = "";
+};
+
+document.getElementById("chat-send").addEventListener("click", sendChat);
+document.getElementById("chat-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendChat();
+});
+
 // ── 서비스워커 / 푸시 구독 ────────────────────────────────
 if ("serviceWorker" in navigator && "PushManager" in window) {
   navigator.serviceWorker.register("/serviceWorker.js").then(async (swReg) => {

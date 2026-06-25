@@ -66,50 +66,39 @@ document.getElementById("today").innerText = `${
 // 멤버 목록 렌더링
 renderMemberList();
 
-// if('serviceWorker' in navigator && 'PushManager' in window) {
-//   navigator.serviceWorker.register('/serviceWorker.js')
-//   .then(function(swReg) {
-//     console.log('Service Worker is registered', swReg);
-//   })
-//   .catch(function(error) {
-//     console.error('Service Worker Error', error);
-//   });
-// } else {
-//   console.warn('Push messaging is not supported');
-//   pushButton.textContent = 'Push Not Supported';
-// }
-// var isNotificationSupported = 'Notification' in window;
+// 서비스워커 등록 및 푸시 구독
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+  navigator.serviceWorker.register('/serviceWorker.js').then(async (swReg) => {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') return;
 
-// if (isNotificationSupported)
-// {
-//     Notification.requestPermission().then(function (result)
-//     {
-//         if (result === 'granted')
-//         {
-//             console.log('[Notification] 허용: ', result);
-//         }
-//         else
-//         {
-//             console.log('[Notification] 차단: ', result);
-//         }
-//     });
-// }
+    let subscription = await swReg.pushManager.getSubscription();
+    if (!subscription) {
+      const { key } = await fetch('/vapid-public-key').then((r) => r.json());
+      subscription = await swReg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(key),
+      });
+    }
 
-// notification
-// const sendNotification = () => {
-//   let weekDayNum = todayDate.getDay()
-//   if (weekDayNum > 2 && weekDayNum < 6) {
-//     const noti = new Notification('Lucky Me (추첨기)', {
-//       body: '식사 추첨 시간입니다!',
-//       icon: 'img/lucky-me-icon_120.png',
-//       data: { link: 'https://lucky-me.fly.dev/' },
-//     });
-//     noti.onclick = (e) => {
-//       e.preventDefault();
-//       window.open(noti.data.link)
-//     };
-//   }
-// }
+    // 서버 재시작 시 구독 목록이 초기화되므로 접속마다 전달
+    await fetch('/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subscription),
+    });
+
+    // 현재 접속 중임을 서버에 알림
+    socket.emit('push:online', subscription.endpoint);
+  });
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)));
+}
 
 // 접속 시 서버에 사용자 입장 메시지 전송
 socket.emit("socket");

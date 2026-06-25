@@ -9,7 +9,7 @@
 
 ## 실행 방법 (로컬)
 
-사전 요구사항: `Node.js 20.18.2`
+사전 요구사항: `Node.js 24.15.0`
 
 1. 패키지 설치
    ```bash
@@ -77,3 +77,10 @@
 - Node.js
 - Express.js
 - Socket.io
+
+## env (환경변수)
+
+- PORT=7777
+- VAPID_PUBLIC_KEY=
+- VAPID_PRIVATE_KEY=
+- VAPID_MAILTO=mailto:이메일주소

@@ -26,7 +26,8 @@ const closeNicknameModal = () => {
 };
 
 const openNicknameModal = () => {
-  const current = myNicknameEl.textContent || sessionStorage.getItem(NICKNAME_KEY) || "";
+  const current =
+    myNicknameEl.textContent || sessionStorage.getItem(NICKNAME_KEY) || "";
   const input = document.getElementById("nickname-input");
   input.value = current;
   nicknameErrorEl.textContent = NICKNAME_HINT;
@@ -73,14 +74,16 @@ document.getElementById("nickname-input").addEventListener("input", (e) => {
   nicknameErrorEl.style.color = "";
   nicknameConfirmBtn.disabled = !e.target.value.trim();
 });
-document.getElementById("nickname-random").addEventListener("click", async () => {
-  const { name } = await fetch("/random-nickname").then((r) => r.json());
-  const input = document.getElementById("nickname-input");
-  input.value = name;
-  nicknameConfirmBtn.disabled = false;
-  nicknameErrorEl.textContent = NICKNAME_HINT;
-  nicknameErrorEl.style.color = "";
-});
+document
+  .getElementById("nickname-random")
+  .addEventListener("click", async () => {
+    const { name } = await fetch("/random-nickname").then((r) => r.json());
+    const input = document.getElementById("nickname-input");
+    input.value = name;
+    nicknameConfirmBtn.disabled = false;
+    nicknameErrorEl.textContent = NICKNAME_HINT;
+    nicknameErrorEl.style.color = "";
+  });
 document
   .getElementById("nickname-close")
   .addEventListener("click", closeNicknameModal);
@@ -215,29 +218,87 @@ document.getElementById("chat-input").addEventListener("keydown", (e) => {
 });
 
 // ── 서비스워커 / 푸시 구독 ────────────────────────────────
-if ("serviceWorker" in navigator && "PushManager" in window) {
-  navigator.serviceWorker.register("/serviceWorker.js").then(async (swReg) => {
-    const permission = await Notification.requestPermission();
-    if (permission !== "granted") return;
+const notifyToggleBtn = document.getElementById("notify-toggle");
+const notifyLabel = document.getElementById("notify-label");
 
-    let subscription = await swReg.pushManager.getSubscription();
-    if (!subscription) {
-      const { key } = await fetch("/vapid-public-key").then((r) => r.json());
-      subscription = await swReg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(key),
-      });
-    }
+let toastTimer = null;
+const showToast = (msg) => {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2000);
+};
 
-    await fetch("/subscribe", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(subscription),
+const setNotifyUI = (on, pending = false) => {
+  notifyToggleBtn.classList.toggle("on", on);
+  notifyToggleBtn.style.opacity = pending ? "0.5" : "";
+  notifyLabel.textContent = pending ? "처리 중..." : on ? "켜짐" : "꺼짐";
+};
+
+let swReg = null;
+let isSubscribed = false;
+let notifyPending = false;
+
+const initServiceWorker = async () => {
+  if (!("serviceWorker" in navigator && "PushManager" in window)) return;
+  swReg = await navigator.serviceWorker.register("/serviceWorker.js");
+  const sub = await swReg.pushManager.getSubscription();
+  if (sub) {
+    isSubscribed = true;
+    setNotifyUI(true);
+    socket.emit("push:online", sub.endpoint);
+  }
+};
+
+const enableNotify = async () => {
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") { setNotifyUI(false); isSubscribed = false; return; }
+  let sub = await swReg.pushManager.getSubscription();
+  if (!sub) {
+    const { key } = await fetch("/vapid-public-key").then((r) => r.json());
+    sub = await swReg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(key),
     });
-
-    socket.emit("push:online", subscription.endpoint);
+  }
+  await fetch("/subscribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(sub),
   });
-}
+  socket.emit("push:online", sub.endpoint);
+  isSubscribed = true;
+};
+
+const disableNotify = async () => {
+  const sub = await swReg.pushManager.getSubscription();
+  if (sub) await sub.unsubscribe();
+  isSubscribed = false;
+};
+
+notifyToggleBtn.addEventListener("click", async () => {
+  if (!swReg || notifyPending) return;
+  if (Notification.permission === "denied") {
+    alert("알림이 차단되어 있습니다.\n브라우저 설정에서 이 사이트의 알림을 허용해주세요.");
+    return;
+  }
+  notifyPending = true;
+  const wasSubscribed = isSubscribed;
+  setNotifyUI(!wasSubscribed, true);
+  if (wasSubscribed) {
+    await disableNotify();
+    setNotifyUI(false);
+    showToast("알림이 꺼졌습니다");
+  } else {
+    await enableNotify();
+    setNotifyUI(isSubscribed);
+    showToast(isSubscribed ? "알림이 켜졌습니다" : "알림 설정에 실패했습니다");
+  }
+  notifyPending = false;
+});
+
+initServiceWorker();
 
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);

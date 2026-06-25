@@ -13,6 +13,13 @@
     <nav id="left-panel">
       <button id="left-toggle-button"></button>
       <div class="left-container">
+        <div id="notify-bar">
+          <span id="notify-title">푸시 알림</span>
+          <div id="notify-right">
+            <span id="notify-label">꺼짐</span>
+            <button id="notify-toggle" type="button" class="toggle-btn"></button>
+          </div>
+        </div>
         <article class="content-box user-box">
           <h3 class="title">내 이름</h3>
           <div class="user-info">
@@ -76,12 +83,15 @@
             maxlength="10"
             placeholder="이름 (최대 10자)"
           />
-          <button id="nickname-random" type="button" title="랜덤 닉네임">🎲</button>
+          <button id="nickname-random" type="button" title="랜덤 닉네임">
+            🎲
+          </button>
         </div>
         <p id="nickname-error">사용할 이름을 입력하세요</p>
         <button id="nickname-confirm" type="button">확인</button>
       </div>
     </div>
+    <div id="toast"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/main.js" type="module"></script>
     <script src="js/aside.js"></script>

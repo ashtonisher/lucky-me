@@ -76,6 +76,17 @@ const initAside = async () => {
     leftPanel.classList.toggle("open");
   });
 
+  document.addEventListener("click", (e) => {
+    if (
+      leftPanel.classList.contains("open") &&
+      !leftPanel.contains(e.target) &&
+      e.target !== leftToggleBtn
+    ) {
+      leftToggleBtn.classList.remove("open");
+      leftPanel.classList.remove("open");
+    }
+  });
+
   // 플로팅 닉네임 버튼 클릭 시 사이드바 열기
   document
     .getElementById("nickname-floating")

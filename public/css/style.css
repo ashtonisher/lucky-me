@@ -232,6 +232,10 @@ body::-webkit-scrollbar-track {
 @media (max-width: 768px) {
   #nickname-floating {
     display: block;
+bottom: auto;
+    top: 16px;
+    left: auto;
+    right: 16px;
   }
 }
 
@@ -289,20 +293,45 @@ body::-webkit-scrollbar-track {
   font-size: 24px;
 }
 
+#nickname-input-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
 #nickname-input {
+flex: 1;
   border: 1px solid #ffcccc;
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 18px;
-  width: 100%;
-  box-sizing: border-box;
+    box-sizing: border-box;
   text-align: center;
   outline: none;
-  margin-bottom: 2px;
-}
+  }
 
 #nickname-input:focus {
   border-color: #f08090;
+}
+
+#nickname-random {
+  background: none;
+  border: none;
+  font-size: 20px;
+  padding: 0 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+@media (hover: hover) {
+  #nickname-random {
+    opacity: 0.6;
+  }
+
+  #nickname-random:hover {
+    opacity: 1;
+  }
 }
 
 #nickname-confirm:disabled {

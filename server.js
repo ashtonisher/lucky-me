@@ -12,7 +12,7 @@ const port = process.env.PORT || 7777;
 webPush.setVapidDetails(
   process.env.VAPID_MAILTO,
   process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
+  process.env.VAPID_PRIVATE_KEY,
 );
 
 // 구독 정보 { endpoint, subscription } 형태로 저장
@@ -40,18 +40,28 @@ if (process.env.OPEN_BROWSER === "true") {
     let targets, body;
     if (type === "schedule") {
       targets = subscriptions.filter((s) => !activeEndpoints.has(s.endpoint));
-      body = "🍽️ 추첨할 시간입니다! 사이트에 접속하세요.";
+      body = "🍽️ 추첨 시간입니다! 사이트에 접속하세요.";
     } else if (type === "all") {
       targets = subscriptions;
-      body = "🍽️ 추첨할 시간입니다! 사이트에 접속하세요.";
+      body = "🍽️ 추첨 시간입니다! 사이트에 접속하세요.";
     } else {
       targets = subscriptions;
       body = "🎉 당첨: 홍길동 님";
     }
-    notify(targets, { title: "Lucky Me [테스트]", body, icon: "/img/lucky-me-icon_120.png", url: "/" });
+    notify(targets, {
+title: "Lucky Me [테스트]",
+body,
+icon: "/img/lucky-me-icon_120.png",
+url: "/",
+});
     res.json({ ok: true, type, sent: targets.length });
   });
 }
+
+// 랜덤 닉네임 후보 제공 (usedNames에 등록하지 않음)
+app.get("/random-nickname", (req, res) => {
+  res.json({ name: previewNickname() });
+});
 
 // VAPID 공개키 전달 (클라이언트에서 구독 시 필요)
 app.get("/vapid-public-key", (req, res) => {
@@ -62,7 +72,7 @@ app.get("/vapid-public-key", (req, res) => {
 app.post("/subscribe", (req, res) => {
   const subscription = req.body;
   const exists = subscriptions.some(
-    (s) => s.endpoint === subscription.endpoint
+    (s) => s.endpoint === subscription.endpoint,
   );
   if (!exists) subscriptions.push(subscription);
   res.status(201).json({ ok: true });
@@ -70,7 +80,7 @@ app.post("/subscribe", (req, res) => {
 
 function notify(targets, payload) {
   targets.forEach((sub) =>
-    webPush.sendNotification(sub, JSON.stringify(payload)).catch(() => {})
+    webPush.sendNotification(sub, JSON.stringify(payload)).catch(() => {}),
   );
 }
 
@@ -87,16 +97,24 @@ function sendWinnerNotification(winner) {
 }
 
 // 평일 오전 11시: 미접속 구독자에게만 발송
-cron.schedule("0 11 * * 1-5", () => {
-  const targets = subscriptions.filter((s) => !activeEndpoints.has(s.endpoint));
+cron.schedule(
+"0 11 * * 1-5",
+() => {
+  const targets = subscriptions.filter(
+(s) => !activeEndpoints.has(s.endpoint),
+);
   notify(targets, {
     title: "Lucky Me",
-    body: "🍽️ 추첨할 시간입니다! 사이트에 접속하세요.",
+    body: "🍽️ 추첨 시간입니다! 사이트에 접속하세요.",
     icon: "/img/lucky-me-icon_120.png",
     tag: "lucky-me-schedule",
     url: "/",
   });
-}, { timezone: "Asia/Seoul" });
+},
+{ timezone: "Asia/Seoul" },
+);
+
+const { randomNickname, releaseNickname, previewNickname } = require("./nickname");
 
 let resultUser = 5;
 let counter = 0;
@@ -107,9 +125,12 @@ app.use(express.static("public"));
 
 io.on("connection", (socket) => {
   connectUser++;
-  const defaultName = `접속자 ${connectUser}`;
+  const defaultName = randomNickname();
   connectedUsers[socket.id] = defaultName;
-  io.emit("users:update", { count: connectUser, users: Object.values(connectedUsers) });
+  io.emit("users:update", {
+count: connectUser,
+users: Object.values(connectedUsers),
+});
   socket.emit("init:nickname", defaultName);
 
   // 닉네임 설정
@@ -117,14 +138,18 @@ io.on("connection", (socket) => {
     const trimmed = nickname?.trim().slice(0, 10);
     if (!trimmed) return;
     const isDuplicate = Object.entries(connectedUsers).some(
-      ([id, name]) => id !== socket.id && name === trimmed
+      ([id, name]) => id !== socket.id && name === trimmed,
     );
     if (isDuplicate) {
-      if (callback) callback({ ok: false, message: "이미 사용 중인 닉네임입니다." });
+      if (callback)
+callback({ ok: false, message: "이미 사용 중인 닉네임입니다." });
       return;
     }
     connectedUsers[socket.id] = trimmed;
-    io.emit("users:update", { count: connectUser, users: Object.values(connectedUsers) });
+    io.emit("users:update", {
+count: connectUser,
+users: Object.values(connectedUsers),
+});
     if (callback) callback({ ok: true });
   });
 
@@ -176,8 +201,16 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     if (connectUser > 0) connectUser--;
-    delete connectedUsers[socket.id];
-    io.emit("users:update", { count: connectUser, users: Object.values(connectedUsers) });
+releaseNickname(connectedUsers[socket.id]);
+releaseNickname(connectedUsers[socket.id]);
+    delete connectedUsers[soc
+et.id];
+,
+
+    io.emit("users:update", {
+count: connectUser,
+users: Object.values(connectedUsers),
+});
     const endpoint = socket.data.pushEndpoint;
     if (endpoint) activeEndpoints.delete(endpoint);
   });
@@ -187,7 +220,12 @@ server.listen(port, () => {
   console.log("listening on port*: " + port);
   if (process.env.OPEN_BROWSER === "true") {
     const url = `http://localhost:${port}`;
-    const cmd = process.platform === "win32" ? `start ${url}` : process.platform === "darwin" ? `open ${url}` : `xdg-open ${url}`;
+    const cmd =
+process.platform === "win32"
+? `start ${url}`
+: process.platform === "darwin"
+? `open ${url}`
+: `xdg-open ${url}`;
     require("child_process").exec(cmd);
   }
 });

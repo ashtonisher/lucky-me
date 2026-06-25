@@ -26,12 +26,12 @@ const closeNicknameModal = () => {
 };
 
 const openNicknameModal = () => {
-  const saved = sessionStorage.getItem(NICKNAME_KEY) || "";
+  const current = myNicknameEl.textContent || sessionStorage.getItem(NICKNAME_KEY) || "";
   const input = document.getElementById("nickname-input");
-  input.value = saved;
+  input.value = current;
   nicknameErrorEl.textContent = NICKNAME_HINT;
   nicknameErrorEl.style.color = "";
-  nicknameConfirmBtn.disabled = !saved.trim();
+  nicknameConfirmBtn.disabled = !current.trim();
   document.getElementById("nickname-modal").style.display = "flex";
   input.focus();
 };
@@ -73,6 +73,14 @@ document.getElementById("nickname-input").addEventListener("input", (e) => {
   nicknameErrorEl.style.color = "";
   nicknameConfirmBtn.disabled = !e.target.value.trim();
 });
+document.getElementById("nickname-random").addEventListener("click", async () => {
+  const { name } = await fetch("/random-nickname").then((r) => r.json());
+  const input = document.getElementById("nickname-input");
+  input.value = name;
+  nicknameConfirmBtn.disabled = false;
+  nicknameErrorEl.textContent = NICKNAME_HINT;
+  nicknameErrorEl.style.color = "";
+});
 document
   .getElementById("nickname-close")
   .addEventListener("click", closeNicknameModal);
@@ -109,8 +117,13 @@ const dayNames = [
   "금요일",
   "주말",
 ];
-document.getElementById("today").innerText =
-  `${now.getMonth() + 1}월 ${now.getDate()}일 ${dayNames[now.getDay()]}`;
+const todayStr = `${now.getMonth() + 1}월 ${now.getDate()}일 ${dayNames[now.getDay()]}`;
+document.getElementById("today").innerText = todayStr;
+
+const dateLi = document.createElement("li");
+dateLi.className = "log log-date";
+dateLi.textContent = todayStr;
+document.getElementById("log-list").appendChild(dateLi);
 
 // ── 참여자 수 조절 ───────────────────────────────────────
 let currentResultUser = 5;
@@ -156,7 +169,7 @@ socket.on("set winner", (chosen) => {
   document.getElementById("winner").innerText = `🎉 당첨: ${chosen}번`;
   const li = document.createElement("li");
   li.className = "log";
-  li.innerHTML = `당첨: ${chosen}번 <span>(${hh}:${mm})</span>`;
+  li.innerHTML = `당첨: ${chosen}번 <span>${hh}:${mm}</span>`;
   document.getElementById("log-list").appendChild(li);
 });
 
@@ -166,7 +179,7 @@ socket.on("message", (msg) => {
   const mm = String(t.getMinutes()).padStart(2, "0");
   const li = document.createElement("li");
   li.className = "log";
-  li.innerHTML = `${msg} <span>(${hh}:${mm})</span>`;
+  li.innerHTML = `${msg} <span>${hh}:${mm}</span>`;
   document.getElementById("log-list").appendChild(li);
 });
 

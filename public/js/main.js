@@ -1,171 +1,203 @@
-const { users } = await fetch("db/members.json").then((res) => res.json());
-
 var socket = io();
 
-// 점심 추첨 대상자만 별도로 관리
-const lunchMate = users.filter((user) => user.isLunch);
-const userLength = lunchMate.length;
+socket.on("hmr:reload", () => location.reload());
 
-// aside의 멤버 체크리스트를 members.json 기준으로 렌더링
-const renderMemberList = () => {
-  const memberList = document.querySelector(".member-list");
-  if (!memberList) return;
+// ── 이름 ──────────────────────────────────────────────
+const NICKNAME_KEY = "lucky-me-name";
+const myNicknameEl = document.getElementById("my-nickname");
+const nicknameFloatingEl = document.getElementById("nickname-floating");
+const nicknameErrorEl = document.getElementById("nickname-error");
+const nicknameConfirmBtn = document.getElementById("nickname-confirm");
 
-  memberList.innerHTML = "";
-  users.forEach((user, idx) => {
-    const memberId = `member${String(idx + 1).padStart(2, "0")}`;
-    const li = document.createElement("li");
-    const input = document.createElement("input");
-    const label = document.createElement("label");
+let serverDefaultName = "";
 
-    input.id = memberId;
-    input.type = "checkbox";
-    input.checked = Boolean(user.isLunch);
-    label.setAttribute("for", memberId);
-    label.innerText = user.name;
+const applyNickname = (name) => {
+  myNicknameEl.textContent = name;
+  nicknameFloatingEl.textContent = `👤 ${name}`;
+};
 
-    li.appendChild(input);
-    li.appendChild(label);
-    memberList.appendChild(li);
+const NICKNAME_HINT = "사용할 이름을 입력하세요";
+
+const closeNicknameModal = () => {
+  document.getElementById("nickname-modal").style.display = "none";
+  nicknameErrorEl.textContent = NICKNAME_HINT;
+  nicknameErrorEl.style.color = "";
+  if (!myNicknameEl.textContent) applyNickname(serverDefaultName);
+};
+
+const openNicknameModal = () => {
+  const saved = sessionStorage.getItem(NICKNAME_KEY) || "";
+  const input = document.getElementById("nickname-input");
+  input.value = saved;
+  nicknameErrorEl.textContent = NICKNAME_HINT;
+  nicknameErrorEl.style.color = "";
+  nicknameConfirmBtn.disabled = !saved.trim();
+  document.getElementById("nickname-modal").style.display = "flex";
+  input.focus();
+};
+
+const confirmNickname = () => {
+  const input = document.getElementById("nickname-input").value.trim();
+  if (!input) return;
+  socket.emit("set:nickname", input, (res) => {
+    if (!res.ok) {
+      nicknameErrorEl.textContent = res.message;
+      nicknameErrorEl.style.color = "#ff2300";
+      return;
+    }
+    sessionStorage.setItem(NICKNAME_KEY, input);
+    applyNickname(input);
+    closeNicknameModal();
   });
 };
 
-// 당첨 문구에 붙는 팀 내 호칭
-const callSign = "님";
-// 화면 상단 날짜 표시용 값
-const month = new Date().getMonth();
-const date = new Date().getDate();
-const dayIdx = new Date().getDay();
-let dayOfWeek = "~Yo~";
+const initNickname = () => {
+  const saved = sessionStorage.getItem(NICKNAME_KEY);
+  if (saved) {
+    socket.emit("set:nickname", saved, (res) => {
+      if (res.ok) applyNickname(saved);
+      else openNicknameModal();
+    });
+    return;
+  }
+  applyNickname(serverDefaultName);
+  openNicknameModal();
+};
 
-// 요일 변환
-switch (dayIdx) {
-  case 1:
-    dayOfWeek = "월요일";
-    break;
-  case 2:
-    dayOfWeek = "화요일";
-    break;
-  case 3:
-    dayOfWeek = "수요일";
-    break;
-  case 4:
-    dayOfWeek = "목요일";
-    break;
-  case 5:
-    dayOfWeek = "금요일";
-    break;
-  default:
-    dayOfWeek = "주말";
-    break;
-}
+nicknameConfirmBtn.addEventListener("click", confirmNickname);
+document.getElementById("nickname-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") confirmNickname();
+});
+document.getElementById("nickname-input").addEventListener("input", (e) => {
+  nicknameErrorEl.textContent = NICKNAME_HINT;
+  nicknameErrorEl.style.color = "";
+  nicknameConfirmBtn.disabled = !e.target.value.trim();
+});
+document
+  .getElementById("nickname-close")
+  .addEventListener("click", closeNicknameModal);
+document
+  .getElementById("nickname-edit-button")
+  .addEventListener("click", openNicknameModal);
 
-document.getElementById("today").innerText = `${
-  month + 1
-}월 ${date}일 ${dayOfWeek}`;
-// 멤버 목록 렌더링
-renderMemberList();
+socket.on("init:nickname", (defaultName) => {
+  serverDefaultName = defaultName;
+  if (!myNicknameEl.textContent) myNicknameEl.textContent = defaultName;
+  initNickname();
+});
 
-// 서비스워커 등록 및 푸시 구독
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-  navigator.serviceWorker.register('/serviceWorker.js').then(async (swReg) => {
+// ── 접속자 목록 ──────────────────────────────────────────
+socket.on("users:update", ({ count, users: nicknames }) => {
+  document.getElementById("connected-count").textContent = count;
+  const list = document.getElementById("connected-list");
+  list.innerHTML = "";
+  nicknames.forEach((name) => {
+    const li = document.createElement("li");
+    li.textContent = name;
+    list.appendChild(li);
+  });
+});
+
+// ── 날짜 표시 ────────────────────────────────────────────
+const now = new Date();
+const dayNames = [
+  "주말",
+  "월요일",
+  "화요일",
+  "수요일",
+  "목요일",
+  "금요일",
+  "주말",
+];
+document.getElementById("today").innerText =
+  `${now.getMonth() + 1}월 ${now.getDate()}일 ${dayNames[now.getDay()]}`;
+
+// ── 참여자 수 조절 ───────────────────────────────────────
+let currentResultUser = 5;
+const participantCountEl = document.getElementById("participant-count");
+const updateParticipantDisplay = () => {
+  participantCountEl.textContent = `참여: ${currentResultUser}명`;
+};
+updateParticipantDisplay();
+
+document.getElementById("participant-minus").addEventListener("click", () => {
+  if (currentResultUser > 1) {
+    currentResultUser--;
+    updateParticipantDisplay();
+    socket.emit("set:resultUser", currentResultUser);
+  }
+});
+document.getElementById("participant-plus").addEventListener("click", () => {
+  currentResultUser++;
+  updateParticipantDisplay();
+  socket.emit("set:resultUser", currentResultUser);
+});
+
+socket.on("resultUser:updated", (count) => {
+  currentResultUser = count;
+  updateParticipantDisplay();
+});
+
+// ── 추첨 ─────────────────────────────────────────────────
+const roulette = () => Math.floor(Math.random() * currentResultUser) + 1;
+
+document.getElementById("roulette-button").addEventListener("click", () => {
+  socket.emit("set winner", roulette());
+});
+
+window.onload = () => socket.emit("set winner auto", roulette());
+
+socket.emit("connectMsg", "사용자");
+
+socket.on("set winner", (chosen) => {
+  const t = new Date();
+  const hh = String(t.getHours()).padStart(2, "0");
+  const mm = String(t.getMinutes()).padStart(2, "0");
+  document.getElementById("winner").innerText = `🎉 당첨: ${chosen}번`;
+  const li = document.createElement("li");
+  li.className = "log";
+  li.innerHTML = `당첨: ${chosen}번 <span>(${hh}:${mm})</span>`;
+  document.getElementById("log-list").appendChild(li);
+});
+
+socket.on("message", (msg) => {
+  const t = new Date();
+  const hh = String(t.getHours()).padStart(2, "0");
+  const mm = String(t.getMinutes()).padStart(2, "0");
+  const li = document.createElement("li");
+  li.className = "log";
+  li.innerHTML = `${msg} <span>(${hh}:${mm})</span>`;
+  document.getElementById("log-list").appendChild(li);
+});
+
+// ── 서비스워커 / 푸시 구독 ────────────────────────────────
+if ("serviceWorker" in navigator && "PushManager" in window) {
+  navigator.serviceWorker.register("/serviceWorker.js").then(async (swReg) => {
     const permission = await Notification.requestPermission();
-    if (permission !== 'granted') return;
+    if (permission !== "granted") return;
 
     let subscription = await swReg.pushManager.getSubscription();
     if (!subscription) {
-      const { key } = await fetch('/vapid-public-key').then((r) => r.json());
+      const { key } = await fetch("/vapid-public-key").then((r) => r.json());
       subscription = await swReg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(key),
       });
     }
 
-    // 서버 재시작 시 구독 목록이 초기화되므로 접속마다 전달
-    await fetch('/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    await fetch("/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(subscription),
     });
 
-    // 현재 접속 중임을 서버에 알림
-    socket.emit('push:online', subscription.endpoint);
+    socket.emit("push:online", subscription.endpoint);
   });
 }
 
 function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
   const rawData = atob(base64);
   return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)));
 }
-
-// 접속 시 서버에 사용자 입장 메시지 전송
-socket.emit("socket");
-socket.emit("connectMsg", "사용자");
-
-// 랜덤 당첨자 뽑기 기능 (재사용함수)
-const roulette = () => {
-  // 0 ~ (userLength - 1) 사이 인덱스 생성
-  const chosenNum = Math.floor(Math.random() * userLength);
-  const winner = lunchMate.filter((user, idx) => idx === chosenNum);
-  const chosen = winner[0].name;
-  return chosen;
-};
-
-// 클릭 시 roulette 실행
-const rouletteOnClick = () => {
-  const chosen = roulette();
-  // 클릭 시 발생하는 이벤트 명 set winner
-  socket.emit("set winner", chosen);
-};
-
-// 참여자 모두 접속 시 roulette 자동 실행
-const rouletteOnRenderAuto = () => {
-  const chosen = roulette();
-  // 참여자 접속 시 발생하는 이벤트 명 set winner auto
-  socket.emit("set winner auto", chosen);
-};
-
-// 버튼 클릭시 추첨 진행
-document
-  .getElementById("roulette-button")
-  .addEventListener("click", rouletteOnClick);
-
-// 참여자 모두 접속 시(렌더링) 자동 추첨 진행
-window.onload = rouletteOnRenderAuto;
-
-// set winner 이벤트 받으면 실행
-socket.on("set winner", (chosen) => {
-  // 로그 표기 시간을 HH:mm 형식으로 생성
-  const todayLog = new Date();
-  const hour =
-    todayLog.getHours() < 10 ? `0${todayLog.getHours()}` : todayLog.getHours();
-  const minutes =
-    todayLog.getMinutes() < 10
-      ? `0${todayLog.getMinutes()}`
-      : todayLog.getMinutes();
-  // 당첨자 표시 및 로그 기록 추가
-  document.getElementById("winner").innerText = `🎉당첨: ${chosen} ${callSign}`;
-  var newLog = document.createElement("li");
-  newLog.className = "log";
-  newLog.innerHTML = `당첨자: ${chosen}M <span>(${hour}:${minutes})</span>`;
-  document.getElementById("log-list").appendChild(newLog);
-});
-
-// message 이벤트 받으면 실행
-socket.on("message", (msg) => {
-  // 서버 메시지를 같은 로그 영역에 시간과 함께 누적
-  const todayLog = new Date();
-  const hour =
-    todayLog.getHours() < 10 ? `0${todayLog.getHours()}` : todayLog.getHours();
-  const minutes =
-    todayLog.getMinutes() < 10
-      ? `0${todayLog.getMinutes()}`
-      : todayLog.getMinutes();
-
-  var newLog = document.createElement("li");
-  newLog.className = "log";
-  newLog.innerHTML = `${msg} <span>(${hour}:${minutes})</span>`;
-  document.getElementById("log-list").appendChild(newLog);
-});

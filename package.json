@@ -26,5 +26,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "cross-env OPEN_BROWSER=true node server.js"
+  },
+  "devDependencies": {
+    "chokidar": "^5.0.0"
   }
 }

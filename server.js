@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
-const { users = [] } = require("./public/db/members.json");
 const webPush = require("web-push");
 const cron = require("node-cron");
 
@@ -31,6 +30,11 @@ app.get("/", (req, res) => {
 
 // 테스트용 푸시 발송 (dev 모드에서만)
 if (process.env.OPEN_BROWSER === "true") {
+  const chokidar = require("chokidar");
+  chokidar.watch("public", { ignoreInitial: true }).on("all", () => {
+    io.emit("hmr:reload");
+  });
+
   app.get("/test-push", (req, res) => {
     const type = req.query.type || "winner";
     let targets, body;
@@ -94,27 +98,50 @@ cron.schedule("0 11 * * 1-5", () => {
   });
 }, { timezone: "Asia/Seoul" });
 
-let resultUser = users.length;
+let resultUser = 5;
 let counter = 0;
+const connectedUsers = {}; // socketId -> nickname
 
 // public 정적 폴더 사용 (css, js적용)
 app.use(express.static("public"));
 
 io.on("connection", (socket) => {
   connectUser++;
-  console.log("someone connected..", connectUser);
-  const req = socket.request;
-  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  const defaultName = `접속자 ${connectUser}`;
+  connectedUsers[socket.id] = defaultName;
+  io.emit("users:update", { count: connectUser, users: Object.values(connectedUsers) });
+  socket.emit("init:nickname", defaultName);
 
-  var address = socket.handshake.address;
-  console.log(address);
-  console.log("클라이언트 연결 : ", ip, socket.id);
+  // 닉네임 설정
+  socket.on("set:nickname", (nickname, callback) => {
+    const trimmed = nickname?.trim().slice(0, 10);
+    if (!trimmed) return;
+    const isDuplicate = Object.entries(connectedUsers).some(
+      ([id, name]) => id !== socket.id && name === trimmed
+    );
+    if (isDuplicate) {
+      if (callback) callback({ ok: false, message: "이미 사용 중인 닉네임입니다." });
+      return;
+    }
+    connectedUsers[socket.id] = trimmed;
+    io.emit("users:update", { count: connectUser, users: Object.values(connectedUsers) });
+    if (callback) callback({ ok: true });
+  });
 
   // 클라이언트가 접속 시 자신의 push endpoint를 알려줌
   socket.on("push:online", (endpoint) => {
     if (endpoint) {
       socket.data.pushEndpoint = endpoint;
       activeEndpoints.add(endpoint);
+    }
+  });
+
+  // 참여자 수 변경
+  socket.on("set:resultUser", (count) => {
+    const n = parseInt(count);
+    if (!isNaN(n) && n > 0) {
+      resultUser = n;
+      io.emit("resultUser:updated", resultUser);
     }
   });
 
@@ -147,10 +174,10 @@ io.on("connection", (socket) => {
     io.emit("message", msg);
   });
 
-  socket.on("disconnect", (msg) => {
+  socket.on("disconnect", () => {
     if (connectUser > 0) connectUser--;
-    console.log(`접속종료: ${msg}`);
-    io.emit("message", "사용자 나감", msg);
+    delete connectedUsers[socket.id];
+    io.emit("users:update", { count: connectUser, users: Object.values(connectedUsers) });
     const endpoint = socket.data.pushEndpoint;
     if (endpoint) activeEndpoints.delete(endpoint);
   });

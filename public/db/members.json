@@ -1,9 +1,0 @@
-{
-  "users": [
-    { "name": "멤버1", "isLunch": true },
-    { "name": "멤버2", "isLunch": true },
-    { "name": "멤버3", "isLunch": true },
-    { "name": "멤버4", "isLunch": true },
-    { "name": "멤버5", "isLunch": true }
-  ]
-}

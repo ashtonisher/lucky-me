@@ -16,11 +16,6 @@ let hasOpened = false;
 const asideToggle = (e) => {
   e.target.classList.toggle("open");
   document.getElementById("aside").classList.toggle("open");
-  // 메뉴 열린 적 없으면 메뉴 추천 기능 자동 실행
-  if (!hasOpened) {
-    hasOpened = true;
-    menuSuggest();
-  }
 };
 
 // 메뉴 추천 기능
@@ -33,7 +28,7 @@ const menuSuggest = () => {
   }
 
   document.getElementsByClassName("menu-name")[0].innerText = "메뉴추천중...";
-  const menuIndex = Math.floor(Math.random() * menuList.length - 1);
+  const menuIndex = Math.floor(Math.random() * menuList.length);
   const suggestion = menuList[menuIndex];
   const categoryReg = /\[[ㄱ-ㅎ가-힣$]+\]\s*/g; // [행사], [반찬], [신메뉴] 등 카테고리 제거
 
@@ -44,7 +39,7 @@ const menuSuggest = () => {
   }
   document.getElementsByClassName("menu-name")[0].innerText = title.replace(
     categoryReg,
-    ""
+    "",
   );
   document.getElementsByClassName("menu-price")[0].innerText = price + "원";
   return suggestion;
@@ -65,12 +60,26 @@ const initAside = async () => {
   }
 
   document
-    .getElementById("aside-toggle-button")
-    .addEventListener("click", asideToggle);
-  // menu reload 버튼 클릭시 메뉴 재추천
-  document
     .getElementById("menu-reload-button")
     .addEventListener("click", menuSuggestOnClick);
+
+  // 왼쪽 패널 모바일 토글
+  const leftToggleBtn = document.getElementById("left-toggle-button");
+  const leftPanel = document.getElementById("left-panel");
+  const openLeftPanel = () => {
+    leftToggleBtn.classList.add("open");
+    leftPanel.classList.add("open");
+  };
+
+  leftToggleBtn.addEventListener("click", (e) => {
+    e.target.classList.toggle("open");
+    leftPanel.classList.toggle("open");
+  });
+
+  // 플로팅 닉네임 버튼 클릭 시 사이드바 열기
+  document
+    .getElementById("nickname-floating")
+    .addEventListener("click", openLeftPanel);
 };
 
 initAside();

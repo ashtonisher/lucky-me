@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -10,49 +10,66 @@
   </head>
 
   <body>
+    <nav id="left-panel">
+      <button id="left-toggle-button"></button>
+      <div class="left-container">
+        <article class="content-box user-box">
+          <h3 class="title">내 이름</h3>
+          <div class="user-info">
+            <span id="my-nickname"></span>
+            <button id="nickname-edit-button" type="button" title="이름 바꾸기">
+              ✏️
+            </button>
+          </div>
+        </article>
+        <article class="content-box connected-box">
+          <h3 class="title">접속자 <span id="connected-count">0</span>명</h3>
+          <section class="members scroll-content content">
+            <ul id="connected-list" class="member-list"></ul>
+          </section>
+        </article>
+        <article class="menu-suggest content-box">
+          <h3 class="menu title">🍛🍜🍱🍚</h3>
+          <section class="menu-info content">
+            <p class="menu-name">메뉴 추천</p>
+            <span class="menu-price">&nbsp;</span>
+          </section>
+          <button id="menu-reload-button">draw</button>
+          <p class="noti menu-update">Update: 2023.02.08</p>
+        </article>
+      </div>
+    </nav>
     <main class="main">
       <h1 id="main-title">Lucky Me</h1>
       <h2 id="today"></h2>
       <h2 id="winner">추첨이 필요합니다</h2>
+      <div id="participant-control">
+        <button id="participant-minus" type="button">−</button>
+        <span id="participant-count"></span>
+        <button id="participant-plus" type="button">+</button>
+      </div>
       <button id="roulette-button" type="button">추첨하기</button>
       <section id="log-container">
         <h3 id="log-title">Log</h3>
         <ul id="log-list" class="scroll-content"></ul>
       </section>
-      <aside id="aside">
-        <button id="aside-toggle-button"></button>
-        <div class="aside-container">
-          <article class="menu-suggest content-box">
-            <h3 class="menu title">🍛🍜🍱🍚</h3>
-            <section class="menu-info content">
-              <p class="menu-name">추천메뉴</p>
-              <span class="menu-price">1,000원</span>
-            </section>
-            <button id="menu-reload-button">draw</button>
-            <p class="noti menu-update">Update: 2023.02.08</p>
-          </article>
-          <article class="member-box content-box">
-            <h3 class="title">Member</h3>
-            <section class="members scroll-content content">
-              <ul class="member-list"></ul>
-            </section>
-          </article>
-          <!-- <article class="log-box content-box">
-          <h3 class="title">Lucky Log</h3>
-          <section class="scroll-content content">
-            <ul class="lucky-log-list">
-              <li>test_log_1</li>
-              <li>test_log_2</li>
-              <li>test_log_3</li>
-            </ul>
-          </section>
-        </article> -->
-        </div>
-      </aside>
     </main>
+    <button id="nickname-floating" type="button"></button>
+    <div id="nickname-modal">
+      <div id="nickname-modal-box">
+        <button id="nickname-close" type="button">✕</button>
+        <h2>이름 설정</h2>
+        <input
+          id="nickname-input"
+          type="text"
+          maxlength="10"
+          placeholder="이름 (최대 10자)"
+        />
+        <p id="nickname-error">사용할 이름을 입력하세요</p>
+        <button id="nickname-confirm" type="button">확인</button>
+      </div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
-    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
-    <!-- <script src="js/ngrok-skip.js" async></script> -->
     <script src="js/main.js" type="module"></script>
     <script src="js/aside.js"></script>
   </body>
